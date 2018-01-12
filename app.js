@@ -62,13 +62,15 @@ app.get('/aTodo',(req,res)=>{
   res.end();
 })
 app.get('/viewToDo',(req,res)=>{
-  res.write(app.getFileContent('./viewToDo.html'));
+  let file = app.getFileContent('./viewToDo.html').toString();
+  file = file.replace('existingFile',req.cookies.msg || "");
+  res.write(file);
   res.end();
 })
 app.get('/login.html',(req,res)=>{
   res.setHeader('Content-Type','text/html');
   let file = app.getFileContent('./login.html').toString();
-  file = file.replace('Bad_login',req.cookies.message || "")
+  file = file.replace('Bad_login',req.cookies.message || "");
   res.write(file);
   res.end();
 })
@@ -102,13 +104,18 @@ app.post('/createToDo',(req,res)=>{
     title:req.body.title,
     comment:req.body.todoitem
   }
+  let todo = toDos.filter(u=>u.title==req.body.title);
+  if(todo.length!=0){
+    res.setHeader('Set-Cookie',"msg=File already Exists; Max-Age=5");
+    res.redirect('/viewToDo');
+    return;
+  }
   toDos.unshift(comments);
   fs.writeFile('./data/todoList.json',JSON.stringify(toDos,null,2));
   res.redirect('/viewToDo');
   res.end();
 })
 app.get('/delete',(req,res)=>{
-  console.log(req.cookies.title);
   let todo = toDos.filter(function(el){
     return el.title != req.cookies.title;
   });
