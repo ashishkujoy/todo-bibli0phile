@@ -113,12 +113,38 @@ app.get('/delete',(req,res)=>{
   let todo = toDos.filter(function(el){
     return el.title != req.cookies.title;
   });
+  delete req.cookies.title;
   toDos = todo;
   fs.writeFile('./data/todoList.json',JSON.stringify(toDos,null,2));
   res.redirect('/viewToDo');
   res.end();
 })
-
+app.get('/edit',(req,res)=>{
+  let file= app.getFileContent('./edit.html').toString();
+  let todo = toDos.find(function(el){
+    return el.title == req.cookies.title;
+  });
+  file=file.replace('editabletitle',todo.title);
+  file=file.replace('editabledescription',todo.comment);
+  res.write(file);
+  res.end();
+})
+app.post('/edit',(req,res)=>{
+  let date = new Date();
+  let todo = toDos.filter(function(el){
+    return el.title != req.cookies.title;
+  });
+  let comments= { date: date.toLocaleString(),
+    name:req.user.userName,
+    title:req.body.title,
+    comment:req.body.todoitem
+  }
+  todo.unshift(comments);
+  toDos=todo;
+  fs.writeFile('./data/todoList.json',JSON.stringify(toDos,null,2));
+  res.redirect('/viewToDo');
+  res.end();
+});
 app.postUse(app.showFile);
 
 module.exports = app;
