@@ -5,7 +5,6 @@ const getToDos = function (userComment) {
    <b>title:</b>${feedback.title}<br>
    <hr/>`;
  })
- console.log(toDos);
  return toDos;
 }
 

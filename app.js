@@ -45,12 +45,10 @@ app.use(redirectLoggedOutUserToLogin);
 app.get('/',(req,res)=>{
   res.redirect('./home.html');
 })
-
 app.get('/todoList',(req,res)=>{
   res.write(JSON.stringify(toDos));
   res.end();
 })
-
 app.post('/viewToDo',(req,res)=>{
   res.setHeader('Set-Cookie',`title=${req.body.title}`);
   res.redirect('/aTodo');
@@ -92,14 +90,12 @@ app.post('/login.html',(req,res)=>{
   user.sessionid = sessionid;
   res.redirect('/home.html');
 });
-
 app.get('/createToDo',(req,res)=>{
   let file = app.getFileContent('./createToDo.html').toString();
   file = file.replace('username',`${req.user.userName}` || "");
   res.write(file);
   res.end();
 })
-
 app.post('/createToDo',(req,res)=>{
   let date = new Date();
   let comments= { date: date.toLocaleString(),
@@ -108,6 +104,16 @@ app.post('/createToDo',(req,res)=>{
     comment:req.body.todoitem
   }
   toDos.unshift(comments);
+  fs.writeFile('./data/todoList.json',JSON.stringify(toDos,null,2));
+  res.redirect('/viewToDo');
+  res.end();
+})
+app.get('/delete',(req,res)=>{
+  console.log(req.cookies.title);
+  let todo = toDos.filter(function(el){
+    return el.title != req.cookies.title;
+  });
+  toDos = todo;
   fs.writeFile('./data/todoList.json',JSON.stringify(toDos,null,2));
   res.redirect('/viewToDo');
   res.end();
