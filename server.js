@@ -59,6 +59,10 @@ app.get('/',(req,res)=>{
   res.redirect('./home.html');
 })
 
+app.get('/view',(req,res)=>{
+  console.log(req);
+})
+
 // app.get('/guestBook.html',(req,res)=>{
 //   res.setHeader('Content-type','text/html');
 //   let form = app.getFileContent('./formTemplate').toString('utf8');
@@ -70,11 +74,23 @@ app.get('/',(req,res)=>{
 // });
 
 
-// app.get('/comment',(req,res)=>{
-//   res.write(JSON.stringify(toDos));
-//   res.end();
-// })
+app.get('/todoList',(req,res)=>{
+  res.write(JSON.stringify(toDos));
+  res.end();
+})
 
+app.post('/viewToDo',(req,res)=>{
+  res.setHeader('Set-Cookie',`title=${req.body.title}`);
+  res.redirect('/aTodo');
+})
+app.get('/aTodo.html',(req,res)=>{
+  let title = req.cookies.title;
+  console.log(title);
+})
+app.get('/viewToDo',(req,res)=>{
+  res.write(app.getFileContent('./viewToDo.html'));
+  res.end();
+})
 app.get('/login.html',(req,res)=>{
   res.setHeader('Content-Type','text/html');
   let file = app.getFileContent('./login.html').toString();
