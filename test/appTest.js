@@ -17,7 +17,7 @@ describe('app',()=>{
   describe('GET /',()=>{
     it('redirects to home.html',done=>{
       request(app,{method:'GET',url:'/'},(res)=>{
-        th.should_be_redirected_to(res,'/home.html');
+        th.should_be_redirected_to(res,'./home.html');
         assert.equal(res.body,"");
         done();
       })
@@ -33,40 +33,21 @@ describe('app',()=>{
       })
     })
   })
-  describe('GET /home.html',()=>{
-    it('serves the home page',done=>{
-      request(app,{method:'GET',url:'/public/home.html'},res=>{
-        th.status_is_ok(res);
-        th.content_type_is(res,'text/html');
-        done();
-      })
-    })
-  })
-  describe('GET /scripts/flowerCatalog.js',()=>{
-    it('serves the javascript source',done=>{
-      request(app,{method:'GET',url:'/scripts/flowerCatalog.js'},res=>{
-        th.status_is_ok(res);
-        th.content_type_is(res,'text/javascript');
-        th.body_contains(res,'hidePot');
-        done();
-      })
-    })
-  })
+
   describe('GET /login.html',()=>{
     it('serves the login page',done=>{
       request(app,{method:'GET',url:'/login.html'},res=>{
         th.status_is_ok(res);
-        th.body_contains(res,'User Name:');
-        th.body_does_not_contain(res,'login failed');
+        th.body_does_not_contain(res,'Login Failed');
         th.should_not_have_cookie(res,'message');
         done();
       })
     })
+  })
     it('serves the login page with message for a failed login',done=>{
-      request(app,{method:'GET',url:'/login.html',headers:{'cookie':'message=login failed'}},res=>{
+      request(app,{method:'GET',url:'/login.html',headers:{'cookie':'message=Login Failed'}},res=>{
         th.status_is_ok(res);
-        th.body_contains(res,'User Name:');
-        th.body_contains(res,'login failed');
+        th.body_contains(res,'Login Failed');
         th.should_not_have_cookie(res,'message');
         done();
       })
@@ -75,27 +56,16 @@ describe('app',()=>{
 
   describe('POST /login',()=>{
     it('redirects to guestBook for valid user',done=>{
-      request(app,{method:'POST',url:'/login',body:'username=arvind'},res=>{
-        th.should_be_redirected_to(res,'/guestBook');
-        th.should_not_have_cookie(res,'message');
+      request(app,{method:'POST',url:'/login.html',body:'userName=pallabi'},res=>{
+        th.should_be_redirected_to(res,'/home.html');
         done();
       })
     })
     it('redirects to login.html with message for invalid user',done=>{
-      request(app,{method:'POST',url:'/login',body:'username=badUser'},res=>{
+      request(app,{method:'POST',url:'/login.html',body:'userName=badUser'},res=>{
         th.should_be_redirected_to(res,'/login.html');
-        th.should_have_expiring_cookie(res,'message','login failed');
+        th.should_have_expiring_cookie(res,'message','Login Failed');
         done();
       })
     })
   })
-
-  describe.skip('POST /submitForm',()=>{
-    it('serves the javascript source',done=>{
-      request(app,{method:'POST',url:'/submitForm',body:'name=Foo&comment=Faa'},res=>{
-        th.should_be_redirected_to(res,'/guestBook');
-        done();
-      })
-    })
-  })
-})
