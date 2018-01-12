@@ -4,8 +4,8 @@ const timeStamp = require('./time.js').timeStamp;
 const WebApp = require('./webapp');
 let registered_users = [{userName:'pallabi'},{userName:'ishu'}];
 let toS = o=>JSON.stringify(o,null,2);
-// let userComments = fs.readFileSync('./data/comments.json');
-// userComments = JSON.parse(userComments);
+let toDos = fs.readFileSync('./data/todoList.json');
+toDos = JSON.parse(toDos);
 
 
 let loadUser = (req,res)=>{
@@ -69,14 +69,9 @@ app.get('/',(req,res)=>{
 //   res.end();
 // });
 
-app.get('/logout',(req,res)=>{
-  res.setHeader('Set-Cookie',[`sessionid=0,Expires=${new Date(1).toUTCString()}`]);
-  delete req.user.sessionid;
-  res.redirect('/login.html');
-});
 
 // app.get('/comment',(req,res)=>{
-//   res.write(JSON.stringify(userComments));
+//   res.write(JSON.stringify(toDos));
 //   res.end();
 // })
 
@@ -87,7 +82,11 @@ app.get('/login.html',(req,res)=>{
   res.write(file);
   res.end();
 })
-
+app.get('/logout',(req,res)=>{
+  res.setHeader('Set-Cookie',[`sessionid=0,Expires=${new Date(1).toUTCString()}`]);
+  delete req.user.sessionid;
+  res.redirect('/login.html');
+});
 app.post('/login.html',(req,res)=>{
   let user = registered_users.find(u=>u.userName==req.body.userName);
   if(!user) {
@@ -101,17 +100,25 @@ app.post('/login.html',(req,res)=>{
   res.redirect('/home.html');
 });
 
-// app.post('/guestBook.html',(req,res)=>{
-//   let date = new Date();
-//   let comments= { date: date.toLocaleString(),
-//     name:req.user.userName,
-//     comment:req.body.comment
-//   }
-//   userComments.unshift(comments);
-//   fs.writeFile('./data/comments.json',JSON.stringify(userComments,null,2));
-//   res.redirect('/guestBook.html');
-//   res.end();
-// })
+app.get('/createToDo',(req,res)=>{
+  let file = app.getFileContent('./createToDo.html').toString();
+  file = file.replace('username',`${req.user.userName}` || "");
+  res.write(file);
+  res.end();
+})
+
+app.post('/createToDo',(req,res)=>{
+  let date = new Date();
+  let comments= { date: date.toLocaleString(),
+    name:req.user.userName,
+    title:req.body.title,
+    comment:req.body.todoitem
+  }
+  toDos.unshift(comments);
+  fs.writeFile('./data/todoList.json',JSON.stringify(toDos,null,2));
+  res.redirect('/viewToDo');
+  res.end();
+})
 
 app.postUse(app.showFile);
 
