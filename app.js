@@ -5,7 +5,7 @@ let registered_users = [{userName:'pallabi'}];
 let toS = o=>JSON.stringify(o,null,2);
 let toDos = fs.readFileSync('./data/todoList.json');
 toDos = JSON.parse(toDos);
-
+let urlList=['/home.html','/logout','/viewToDo','/todoList','/aTodo','/createToDo','/delete','/edit'];
 
 let loadUser = (req,res)=>{
   let sessionid = req.cookies.sessionid;
@@ -15,7 +15,6 @@ let loadUser = (req,res)=>{
   }
 };
 
-
 let app = WebApp.create();
 
 let redirectLoggedInUserToHome = (req,res)=>{
@@ -23,7 +22,7 @@ let redirectLoggedInUserToHome = (req,res)=>{
 }
 
 let redirectLoggedOutUserToLogin = (req,res)=>{
-  if(req.urlIsOneOf(['/home.html','/logout','/viewToDo','/todoList']) && !req.user) res.redirect('/login.html');
+  if(req.urlIsOneOf(urlList) && !req.user) res.redirect('/login.html');
 }
 
 let logRequest = (req,res)=>{
