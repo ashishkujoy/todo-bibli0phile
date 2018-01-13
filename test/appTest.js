@@ -27,7 +27,6 @@ describe('app',()=>{
     it('gives the login page',done=>{
       request(app,{method:'GET',url:'/login.html'},res=>{
         th.status_is_ok(res);
-        th.content_type_is(res,'text/html');
         th.body_contains(res,'Login Page');
         done();
       })

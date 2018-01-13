@@ -1,6 +1,7 @@
-const getToDos = function (userComment) {
+const getToDos = function (userTodos) {
  let toDos = '';
- userComment.forEach(feedback=>{
+ console.log(userTodos);
+ userTodos.todoList.forEach(feedback=>{
    toDos += `
    <b>title:</b>${feedback.title}<br>
    <hr/>`;
