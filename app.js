@@ -6,6 +6,7 @@ let toS = o=>JSON.stringify(o,null,2);
 let toDos = fs.readFileSync('./data/todoList.json');
 toDos = JSON.parse(toDos);
 let urlList=['/home.html','/logout','/viewToDo','/todoList','/aTodo','/createToDo','/delete','/edit'];
+
 const User= function(username) {
   this.userName=username;
   this.todoList =[];
@@ -22,6 +23,15 @@ const writeJsonFile = function(res,toDoList) {
 }
 const isNotValidTodo = function(req,user) {
   return user.todoList.find(u=>u.title==req.body.title);
+}
+const addItemToList = function(list,item) {
+    return list.unshift(item);
+}
+const removeOlderFile = function(folder,username) {
+  return folder.filter(u=>u.userName!=username);
+}
+const removeTodoItem = function(todo,item) {
+  return todo.filter(el=>el.title != item);
 }
 
 let loadUser = (req,res)=>{
@@ -47,6 +57,7 @@ let logRequest = (req,res)=>{
   fs.appendFile('request.log',text,()=>{});
   console.log(`${req.method} ${req.url}`);
 }
+
 let app = WebApp.create();
 
 app.use(logRequest)
@@ -59,7 +70,7 @@ app.get('/',(req,res)=>{
 })
 app.get('/todoList',(req,res)=>{
   let user = toDos.find(u=>u.userName==req.user.userName);
-  res.write(JSON.stringify(user));
+  res.write(JSON.stringify(user)||"");
   res.end();
 })
 app.post('/viewToDo',(req,res)=>{
@@ -68,12 +79,10 @@ app.post('/viewToDo',(req,res)=>{
 })
 app.get('/aTodo',(req,res)=>{
   let user = toDos.find(u=>u.userName==req.user.userName);
-  let title = req.cookies.title;
   let todo = user.todoList.find(u=>u.title==req.cookies.title);
   let file = app.getFileContent('./aTodo.html').toString();
   file = file.replace('titletodo',todo.title);
-  file = file.replace('description',todo.item);
-  res.write(file);
+  res.write(file.replace('description',todo.item));
   res.end();
 })
 app.get('/viewToDo',(req,res)=>{
@@ -120,41 +129,37 @@ app.post('/createToDo',(req,res)=>{
     res.redirect('/viewToDo');
     return;
   }
-  let userInfo =  user.todoList.unshift(userTodo);
-  toDos.unshift(user);
-  writeJsonFile(res,toDos);
+  let userTodoList =  addItemToList(user.todoList,userTodo);
+  newTodos = removeOlderFile(toDos,user.userName);
+  newTodos.unshift(user);
+  writeJsonFile(res,newTodos);
 })
-// app.get('/delete',(req,res)=>{
-//   let todo = toDos.filter(function(el){
-//     return el.title != req.cookies.title;
-//   });
-//   delete req.cookies.title;
-//   toDos = todo;
-//   writeJsonFile(res,toDos);
-// })
+app.get('/delete',(req,res)=>{
+  let user = toDos.find(u=>u.userName==req.user.userName);
+  let todo = removeTodoItem(user.todoList,req.cookies.title);
+  delete req.cookies.title;
+  user.todoList = todo;
+  newTodos = removeOlderFile(toDos,user.userName);
+  writeJsonFile(res,newTodos);
+})
 // app.get('/edit',(req,res)=>{
+//   let user = toDos.find(u=>u.userName==req.user.userName);
 //   let file= app.getFileContent('./edit.html').toString();
-//   let todo = toDos.find(function(el){
-//     return el.title == req.cookies.title;
-//   });
+//   let todo = user.todoList.find(el=>el.title == req.cookies.title);
 //   file=file.replace('editabletitle',todo.title);
-//   file=file.replace('editabledescription',todo.comment);
-//   res.write(file);
+//   res.write(file.replace('editabledescription',todo.item));
 //   res.end();
 // })
+
 // app.post('/edit',(req,res)=>{
 //   let date = new Date();
-//   let todo = toDos.filter(function(el){
-//     return el.title != req.cookies.title;
-//   });
-//   let comments= { date: date.toLocaleString(),
-//     name:req.user.userName,
-//     title:req.body.title,
-//     comment:req.body.todoitem
-//   }
-//   todo.unshift(comments);
-//   toDos=todo;
-//   writeJsonFile(res,toDos);
+//   let user = toDos.find(u=>u.userName==req.user.userName);
+//   let todo = removeTodoItem(user.todoList,req.cookies.title);
+//   let userTodo = new ToDo(date,req.body.title,req.body.todoitem);
+//   let userTodoList =  addItemToList(user.todoList,userTodo);
+//   newTodos = removeOlderFile(toDos,user.userName);
+//   newTodos.unshift(user);
+//   writeJsonFile(res,newTodos);
 // });
 app.postUse(app.showFile);
 
