@@ -131,7 +131,8 @@ app.post('/createToDo',(req,res)=>{
   }
   let userTodoList =  addItemToList(user.todoList,userTodo);
   toDos.unshift(user);
-  writeJsonFile(res,toDos);
+  newTodos = removeOlderFile(toDos,user.userName);
+  writeJsonFile(res,newTodos);
 })
 app.get('/delete',(req,res)=>{
   let user = toDos.find(u=>u.userName==req.user.userName);
@@ -142,29 +143,28 @@ app.get('/delete',(req,res)=>{
   writeJsonFile(res,newTodos);
 })
 
-// app.get('/edit',(req,res)=>{
-//   let user = toDos.find(u=>u.userName==req.user.userName);
-//   let file= app.getFileContent('./edit.html').toString();
-//   let todo = user.todoList.find(el=>el.title == req.cookies.title);
-//   file=file.replace('editabletitle',todo.title);
-//   res.write(file.replace('editabledescription',todo.itme));
-//   res.end();
-// })
+app.get('/edit',(req,res)=>{
+  let user = toDos.find(u=>u.userName==req.user.userName);
+  let file= app.getFileContent('./edit.html').toString();
+  let todo = user.todoList.find(el=>el.title == req.cookies.title);
+  file=file.replace('editabletitle',todo.title);
+  res.write(file.replace('editabledescription',todo.item));
+  res.end();
+})
 
-// app.post('/edit',(req,res)=>{
-//   let date = new Date();
-//   let todo = toDos.filter(function(el){
-//     return el.title != req.cookies.title;
-//   });
-//   let comments= { date: date.toLocaleString(),
-//     name:req.user.userName,
-//     title:req.body.title,
-//     comment:req.body.todoitem
-//   }
-//   todo.unshift(comments);
-//   toDos=todo;
-//   writeJsonFile(res,toDos);
-// });
+app.post('/edit',(req,res)=>{
+  let user = toDos.find(u=>u.userName==req.user.userName);
+  let todo = removeTodoItem(user.todoList,req.cookies.title);
+  user.todoList = todo;
+  let date = new Date();
+  date= date.toLocaleString();
+  let userTodo = new ToDo(date,req.body.title,req.body.todoitem);
+  let userTodoList =  addItemToList(user.todoList,userTodo);
+  toDos.unshift(user);
+  newTodos = removeOlderFile(toDos,user.userName);
+  writeJsonFile(res,newTodos);
+});
+
 app.postUse(app.showFile);
 
 module.exports = app;
