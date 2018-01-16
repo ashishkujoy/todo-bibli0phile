@@ -9,13 +9,16 @@ Build a web application that helps a person maintain to-do list(s).
 Your application should allow a user to:
 
 * Log in to their account
+
 * Add one or more to-do list(s)
 * View their to-do list(s)
 * Edit a to-do list
 * Delete a to-do list
+
 * Add one or more to-do items to each to-do list
 * Mark any to-do item as done
 * Mark any to-do item as not done
+
 * Edit a to-do item
 * Delete a to-do item
 * Log out of their account

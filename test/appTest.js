@@ -1,3 +1,5 @@
+// import { log } from 'util';
+
 let chai = require('chai');
 let assert = chai.assert;
 let request = require('./requestSimulator.js');

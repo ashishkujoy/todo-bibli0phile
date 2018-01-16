@@ -12,7 +12,6 @@ const User= function(username) {
   this.todoList =[];
 }
 const ToDo = function(date,title,items) {
-  this.date = date
   this.title = title;
   this.item = items;
 }
@@ -118,12 +117,10 @@ app.get('/createToDo',(req,res)=>{
   res.end();
 })
 app.post('/createToDo',(req,res)=>{
-  let date = new Date();
-  date= date.toLocaleString();
   let user = toDos.find(u=>u.userName==req.user.userName);
   if(!user)
     user = new User(req.user.userName);
-  let userTodo = new ToDo(date,req.body.title,req.body.todoitem);
+  let userTodo = new ToDo(req.body.title,req.body.todoitem);
   if(isNotValidTodo(req,user)){
     res.setHeader('Set-Cookie',"msg=File already Exists; Max-Age=5");
     res.redirect('/viewToDo');
@@ -131,8 +128,7 @@ app.post('/createToDo',(req,res)=>{
   }
   let userTodoList =  addItemToList(user.todoList,userTodo);
   toDos.unshift(user);
-  newTodos = removeOlderFile(toDos,user.userName);
-  writeJsonFile(res,newTodos);
+  writeJsonFile(res,toDos);
 })
 app.get('/delete',(req,res)=>{
   let user = toDos.find(u=>u.userName==req.user.userName);
@@ -148,23 +144,23 @@ app.get('/edit',(req,res)=>{
   let file= app.getFileContent('./edit.html').toString();
   let todo = user.todoList.find(el=>el.title == req.cookies.title);
   file=file.replace('editabletitle',todo.title);
-  res.write(file.replace('editabledescription',todo.item));
+  res.write(file.replace('editabledescription',todo.itme));
   res.end();
 })
 
-app.post('/edit',(req,res)=>{
-  let user = toDos.find(u=>u.userName==req.user.userName);
-  let todo = removeTodoItem(user.todoList,req.cookies.title);
-  user.todoList = todo;
-  let date = new Date();
-  date= date.toLocaleString();
-  let userTodo = new ToDo(date,req.body.title,req.body.todoitem);
-  let userTodoList =  addItemToList(user.todoList,userTodo);
-  toDos.unshift(user);
-  newTodos = removeOlderFile(toDos,user.userName);
-  writeJsonFile(res,newTodos);
-});
-
+// app.post('/edit',(req,res)=>{
+//   let todo = toDos.filter(function(el){
+//     return el.title != req.cookies.title;
+//   });
+//   let comments= { date: date.toLocaleString(),
+//     name:req.user.userName,
+//     title:req.body.title,
+//     comment:req.body.todoitem
+//   }
+//   todo.unshift(comments);
+//   toDos=todo;
+//   writeJsonFile(res,toDos);
+// });
 app.postUse(app.showFile);
 
 module.exports = app;
