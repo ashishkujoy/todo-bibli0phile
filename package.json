@@ -1,23 +1,25 @@
 {
-  "devDependencies": {
-    "chai": "^4.1.2"
-  },
-  "scripts": {
-    "start": "node server.js"
-  },
-  "name": "todo-app",
-  "description": "## Objective",
+  "name": "todo_app",
   "version": "1.0.0",
+  "description": "## Objective",
   "main": "app.js",
   "directories": {
     "test": "test"
   },
   "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.1.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/STEP-tw/todo-bibli0phile.git"
   },
-  "author": "",
+  "author": "pallabi",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/STEP-tw/todo-bibli0phile/issues"

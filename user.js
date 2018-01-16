@@ -15,26 +15,17 @@ class User {
     let todo = new Todo(this.todoNo,title,description);
     this.allTodo[this.todoNo] = todo;
     this.todoNo++;
+    return this.todoNo-1;
   }
   deleteTodo(todoId) {
     delete this.allTodo[todoId];
     this.todoNo--;
-  }
-  addTodoItem(todoId,item){
-    let todo=this.allTodo[todoId];
-    return todo.addItem(item);
   }
   editTodoTitle(todoId,newTitle){
     this.allTodo[todoId].editTitle(newTitle);
   }
   editTodoDescription(todoId,newDescription) {
     this.allTodo[todoId].editDescription(newDescription);
-  }
-  removeTodoItem(todoId,itemNo){
-    this.allTodo[todoId].removeItem(itemNo);
-  }
-  editTodoItem(todoId,itemNo,newItem){
-    this.allTodo[todoId].editItem(itemNo,newItem);
   }
   getTodoItemStatus(todoId,itemNo){
     return this.allTodo[todoId].getItemStatus(itemNo);
