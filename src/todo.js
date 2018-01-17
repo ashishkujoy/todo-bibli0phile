@@ -13,6 +13,15 @@ class Todo {
     this.items[this.itemNo] = item;
     this.itemNo++;
   }
+  getTitle(){
+    return this.title;
+  }
+  getDescription(){
+    return this.description;
+  }
+  getItem(itemNo){
+    return this.items[itemNo].getItem();
+  }
   editTitle(newTitle){
     this.title = newTitle;
   }
@@ -20,7 +29,7 @@ class Todo {
     this.description = newDescription;
   }
   editItem(itemNo,newObjective){
-    this.items[itemNo].objective = newObjective;
+    this.items[itemNo].editItem(newObjective);
   }
   removeItem(itemNo){
     delete this.items[itemNo];

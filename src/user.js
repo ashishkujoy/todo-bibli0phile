@@ -15,7 +15,7 @@ class User {
     let todo = new Todo(this.todoNo,title,description);
     this.allTodo[this.todoNo] = todo;
     this.todoNo++;
-    return this.todoNo-1;
+    return todo;
   }
   deleteTodo(todoId) {
     delete this.allTodo[todoId];
@@ -26,15 +26,6 @@ class User {
   }
   editTodoDescription(todoId,newDescription) {
     this.allTodo[todoId].editDescription(newDescription);
-  }
-  getTodoItemStatus(todoId,itemNo){
-    return this.allTodo[todoId].getItemStatus(itemNo);
-  }
-  markTodoItemAsDone(todoId,itemNo){
-    this.allTodo[todoId].markItemAsDone(itemNo);
-  }
-  markTodoItemAsUndone(todoId,itemNo){
-    this.allTodo[todoId].markItemAsUndone(itemNo);
   }
 }
 

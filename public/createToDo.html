@@ -3,18 +3,21 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/css/style.css">
-    <title>create ToDo</title>
+    <script src="/js/getTextBox.js" charset="utf-8"></script>
+    <title>Create ToDo</title>
   </head>
   <body>
     <h1>
       <a href="/home.html"><<</a>
-       Create A ToDo</h1>
+      Create A ToDo
+    </h1>
     username
     <form class="create" method="post">
       <p>Title <input type="text" name="title"></p>
-      <p>Description </p>
-      <p><textarea id="items" name="todoitem" rows="30" cols="150"></textarea></p>
-      <input type="submit" name="submit">
+      <p>Description <textarea name="description" rows="1" cols="80"></textarea></p>
+      <p><div id="additem"></div></p>
+      <p><button type="button" onclick="getTextBox()">Add Item</button></p>
+      <p><input type="submit" name="submit"><p>
     </form>
     <a href="/logout">
     <button type="button">logout</button></a>

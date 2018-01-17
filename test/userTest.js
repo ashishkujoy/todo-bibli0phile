@@ -1,6 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
-const User = require('../user.js');
+const User = require('../src/user.js');
 describe('user',()=>{
   describe('#addTodo',()=>{
     it('adding new todo should be added to user allTodo',()=>{

@@ -4,6 +4,12 @@ class TodoItem {
     this.objective = objective;
     this._isDone = false;
   }
+  getItem(){
+    return this.objective;
+  }
+  editItem(newObjective){
+    this.objective = newObjective;
+  }
   markAsDone(){
     this._isDone = true;
   }

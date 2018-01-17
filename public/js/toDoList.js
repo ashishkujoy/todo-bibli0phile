@@ -1,13 +1,10 @@
-const getToDos = function (userTodos) {
- let toDos = '';
- console.log(userTodos);
- userTodos.todoList.forEach(feedback=>{
-   toDos += `
-   <b>title:</b>${feedback.title}<br>
-   <hr/>`;
+const getToDos = function (user) {
+ let toDos = Object.keys(user.allTodo);
+ let todoTitle ='';
+ toDos.forEach(todoID=>{
+   todoTitle += `<a href="todoId-${todoID}">${user.allTodo[todoID].title}</a><br>`;
  })
- console.log(toDos);
- return toDos;
+ return todoTitle;
 }
 
 const toDos = function () {

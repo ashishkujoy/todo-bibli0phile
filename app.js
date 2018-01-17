@@ -1,166 +1,21 @@
-let fs = require('fs');
-const timeStamp = require('./time.js').timeStamp;
 const WebApp = require('./webapp');
-let registered_users = [{userName:'pallabi'},{userName:'sayima'}];
-let toS = o=>JSON.stringify(o,null,2);
-let toDos = fs.readFileSync('./data/todoList.json');
-toDos = JSON.parse(toDos);
-let urlList=['/home.html','/logout','/viewToDo','/todoList','/aTodo','/createToDo','/delete','/edit'];
-
-const User= function(username) {
-  this.userName=username;
-  this.todoList =[];
-}
-const ToDo = function(date,title,items) {
-  this.title = title;
-  this.item = items;
-}
-const writeJsonFile = function(res,toDoList) {
-  fs.writeFile('./data/todoList.json',JSON.stringify(toDoList,null,2));
-  res.redirect('/viewToDo');
-  res.end();
-}
-const isNotValidTodo = function(req,user) {
-  return user.todoList.find(u=>u.title==req.body.title);
-}
-const addItemToList = function(list,item) {
-    return list.unshift(item);
-}
-const removeOlderFile = function(folder,username) {
-  return folder.filter(u=>u.userName!=username);
-}
-const removeTodoItem = function(todo,item) {
-  return todo.filter(el=>el.title != item);
-}
-
-let loadUser = (req,res)=>{
-  let sessionid = req.cookies.sessionid;
-  let user = registered_users.find(u=>u.sessionid==sessionid);
-  if(sessionid && user){
-    req.user = user;
-  }
-};
-let redirectLoggedInUserToHome = (req,res)=>{
-  if(req.urlIsOneOf(['/','/login.html']) && req.user) res.redirect('/home.html');
-}
-let redirectLoggedOutUserToLogin = (req,res)=>{
-  if(req.urlIsOneOf(urlList) && !req.user) res.redirect('/login.html');
-}
-let logRequest = (req,res)=>{
-  let text = ['------------------------------',
-    `${timeStamp()}`,
-    `${req.method} ${req.url}`,
-    `HEADERS=> ${toS(req.headers)}`,
-    `COOKIES=> ${toS(req.cookies)}`,
-    `BODY=> ${toS(req.body)}`,''].join('\n');
-  fs.appendFile('request.log',text,()=>{});
-  console.log(`${req.method} ${req.url}`);
-}
+const lib = require('./appLib.js');
 
 let app = WebApp.create();
 
-app.use(logRequest)
-app.use(loadUser);
-app.use(redirectLoggedInUserToHome);
-app.use(redirectLoggedOutUserToLogin);
+app.use(lib.logRequest)
+app.use(lib.loadUser);
+app.use(lib.redirectLoggedInUserToHome);
+app.use(lib.redirectLoggedOutUserToLogin);
 
-app.get('/',(req,res)=>{
-  res.redirect('./home.html');
-})
-app.get('/todoList',(req,res)=>{
-  let user = toDos.find(u=>u.userName==req.user.userName);
-  res.write(JSON.stringify(user)||"");
-  res.end();
-})
-app.post('/viewToDo',(req,res)=>{
-  res.setHeader('Set-Cookie',`title=${req.body.title}`);
-  res.redirect('/aTodo');
-})
-app.get('/aTodo',(req,res)=>{
-  let user = toDos.find(u=>u.userName==req.user.userName);
-  let todo = user.todoList.find(u=>u.title==req.cookies.title);
-  let file = app.getFileContent('./aTodo.html').toString();
-  file = file.replace('titletodo',todo.title);
-  res.write(file.replace('description',todo.item));
-  res.end();
-})
-app.get('/viewToDo',(req,res)=>{
-  let file = app.getFileContent('./viewToDo.html').toString();
-  res.write(file.replace('existingFile',req.cookies.msg || ""));
-  res.end();
-})
-app.get('/login.html',(req,res)=>{
-  let file = app.getFileContent('./login.html').toString();
-  res.write(file.replace('Bad_login',req.cookies.message || ""));
-  res.end();
-})
-app.get('/logout',(req,res)=>{
-  res.setHeader('Set-Cookie',[`sessionid=0,Expires=${new Date(1).toUTCString()}`]);
-  delete req.user.sessionid;
-  res.redirect('/login.html');
-});
-app.post('/login.html',(req,res)=>{
-  let user = registered_users.find(u=>u.userName==req.body.userName);
-  if(!user) {
-    res.setHeader('Set-Cookie',"message=Login Failed; Max-Age=5");
-    res.redirect('/login.html');
-    return;
-  }
-  let sessionid = new Date().getTime();
-  res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
-  user.sessionid = sessionid;
-  res.redirect('/home.html');
-});
-app.get('/createToDo',(req,res)=>{
-  let file = app.getFileContent('./createToDo.html').toString();
-  res.write(file.replace('username',`${req.user.userName}` || ""));
-  res.end();
-})
-app.post('/createToDo',(req,res)=>{
-  let user = toDos.find(u=>u.userName==req.user.userName);
-  if(!user)
-    user = new User(req.user.userName);
-  let userTodo = new ToDo(req.body.title,req.body.todoitem);
-  if(isNotValidTodo(req,user)){
-    res.setHeader('Set-Cookie',"msg=File already Exists; Max-Age=5");
-    res.redirect('/viewToDo');
-    return;
-  }
-  let userTodoList =  addItemToList(user.todoList,userTodo);
-  toDos.unshift(user);
-  writeJsonFile(res,toDos);
-})
-app.get('/delete',(req,res)=>{
-  let user = toDos.find(u=>u.userName==req.user.userName);
-  let todo = removeTodoItem(user.todoList,req.cookies.title);
-  delete req.cookies.title;
-  user.todoList = todo;
-  newTodos = removeOlderFile(toDos,user.userName);
-  writeJsonFile(res,newTodos);
-})
-
-app.get('/edit',(req,res)=>{
-  let user = toDos.find(u=>u.userName==req.user.userName);
-  let file= app.getFileContent('./edit.html').toString();
-  let todo = user.todoList.find(el=>el.title == req.cookies.title);
-  file=file.replace('editabletitle',todo.title);
-  res.write(file.replace('editabledescription',todo.itme));
-  res.end();
-})
-
-// app.post('/edit',(req,res)=>{
-//   let todo = toDos.filter(function(el){
-//     return el.title != req.cookies.title;
-//   });
-//   let comments= { date: date.toLocaleString(),
-//     name:req.user.userName,
-//     title:req.body.title,
-//     comment:req.body.todoitem
-//   }
-//   todo.unshift(comments);
-//   toDos=todo;
-//   writeJsonFile(res,toDos);
-// });
+app.get('/todoList',lib.getAllTodos);
+app.get('/singletodo',lib.getATodo);
+app.get('/login',lib.getLoginPage);
+app.get('/logout',lib.logoutUser);
+app.post('/login',lib.loginUser);
+app.get('/createToDo',lib.getCreateTodoPage);
+app.post('/createToDo',lib.createATodo);
+app.postUse(lib.serveTodo);
 app.postUse(app.showFile);
 
 module.exports = app;

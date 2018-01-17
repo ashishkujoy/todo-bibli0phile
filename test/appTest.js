@@ -1,5 +1,3 @@
-// import { log } from 'util';
-
 let chai = require('chai');
 let assert = chai.assert;
 let request = require('./requestSimulator.js');
@@ -19,15 +17,15 @@ describe('app',()=>{
   describe('GET /',()=>{
     it('redirects to home.html',done=>{
       request(app,{method:'GET',url:'/'},(res)=>{
-        th.should_be_redirected_to(res,'./home.html');
+        th.should_be_redirected_to(res,'/login');
         assert.equal(res.body,"");
         done();
       })
     })
   })
-  describe('GET /login.html',()=>{
+  describe('GET /login',()=>{
     it('gives the login page',done=>{
-      request(app,{method:'GET',url:'/login.html'},res=>{
+      request(app,{method:'GET',url:'/login'},res=>{
         th.status_is_ok(res);
         th.body_contains(res,'Login Page');
         done();
@@ -35,9 +33,9 @@ describe('app',()=>{
     })
   })
 
-  describe('GET /login.html',()=>{
+  describe('GET /login',()=>{
     it('serves the login page',done=>{
-      request(app,{method:'GET',url:'/login.html'},res=>{
+      request(app,{method:'GET',url:'/login'},res=>{
         th.status_is_ok(res);
         th.body_does_not_contain(res,'Login Failed');
         th.should_not_have_cookie(res,'message');
@@ -46,25 +44,36 @@ describe('app',()=>{
     })
   })
     it('serves the login page with message for a failed login',done=>{
-      request(app,{method:'GET',url:'/login.html',headers:{'cookie':'message=Login Failed'}},res=>{
+      request(app,{method:'GET',url:'/login',headers:{'cookie':'message=Login Failed'}},res=>{
         th.status_is_ok(res);
         th.body_contains(res,'Login Failed');
         th.should_not_have_cookie(res,'message');
         done();
       })
     })
+    describe('GET /home.html',()=>{
+      it('gives the home page',done=>{
+        let user = {userName:"pallabi"};
+        let header = {cookie:"sessionid=12345"};
+        request(app,{
+          method:'GET',url:'/home.html',headers:header,user:user},res=>{
+          th.status_is_ok(res);
+          th.body_contains(res,'TO-DO');
+          done();
+        })
+      })
+    })
   })
-
   describe('POST /login',()=>{
     it('redirects to guestBook for valid user',done=>{
-      request(app,{method:'POST',url:'/login.html',body:'userName=pallabi'},res=>{
+      request(app,{method:'POST',url:'/login',body:'userName=pallabi'},res=>{
         th.should_be_redirected_to(res,'/home.html');
         done();
       })
     })
     it('redirects to login.html with message for invalid user',done=>{
-      request(app,{method:'POST',url:'/login.html',body:'userName=badUser'},res=>{
-        th.should_be_redirected_to(res,'/login.html');
+      request(app,{method:'POST',url:'/login',body:'userName=badUser'},res=>{
+        th.should_be_redirected_to(res,'/login');
         th.should_have_expiring_cookie(res,'message','Login Failed');
         done();
       })
