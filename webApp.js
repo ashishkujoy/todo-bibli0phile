@@ -1,35 +1,4 @@
 const qs = require('querystring');
-const fs = require('fs');
-let contentTypes = {
-  '.jpg': 'image/jpg',
-  '.pdf': 'application/pdf',
-  '.gif':'image/gif',
-  '.html': 'text/html',
-  '.css': 'text/css',
-  '.js': 'text/javascript',
-  '.txt': 'text/plain',
-  '.json':'application/json'
-}
-
-
-const isFile = function(filePath){
-  return fs.existsSync(filePath);
-}
-
-let getFileContent = function(filePath) {
-  return fs.readFileSync(filePath);
-}
-
-let showFile = (req,res)=>{
-  let filePath = `public${req.url}`
-  if(req.method === 'GET' && isFile(filePath)){
-    let fileEx = filePath.slice(filePath.lastIndexOf("."));
-    res.setHeader('content-type',contentTypes[fileEx]);
-    res.write(getFileContent(filePath));
-    res.end();
-  }
-}
-
 
 const toKeyValue = kv=>{
     let parts = kv.split('=');
@@ -122,8 +91,6 @@ let create = ()=>{
   rh.post = post;
   rh.use = use;
   rh.postUse = postUse;
-  rh.showFile=showFile;
-  rh.getFileContent = getFileContent;
   return rh;
 }
 exports.create = create;

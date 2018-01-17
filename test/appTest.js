@@ -14,15 +14,6 @@ describe('app',()=>{
       })
     })
   })
-  describe('GET /',()=>{
-    it('redirects to home.html',done=>{
-      request(app,{method:'GET',url:'/'},(res)=>{
-        th.should_be_redirected_to(res,'/login');
-        assert.equal(res.body,"");
-        done();
-      })
-    })
-  })
   describe('GET /login',()=>{
     it('gives the login page',done=>{
       request(app,{method:'GET',url:'/login'},res=>{

@@ -6,12 +6,12 @@ class StaticFileHandler extends DefaultHandler{
     super();
     this.root = root;
   }
-  getFilePath(req){
-    return `./${this.root}${req.url}`;
+  getFilePath(url){
+    return `./${this.root}${url}`;
   }
   execute(req,res){
-    if(fs.existsSync(this.getFilePath())){
-      let fileContent = fs.readFileSync(this.getFilePath());
+    if(fs.existsSync(this.getFilePath(req.url))){
+      let fileContent = fs.readFileSync(this.getFilePath(req.url));
       res.write(fileContent);
       res.end();
     }

@@ -12,9 +12,6 @@ const writeJsonFile = function(res,userData) {
   res.redirect('/viewToDo.html');
   res.end();
 }
-const removeOlderFile = function(folder,username) {
-  return folder.filter(u=>u.userName!=username);
-}
 lib = {};
 lib.redirectLoggedInUserToHome = (req,res)=>{
   if(req.urlIsOneOf(['/','/login']) && req.user) res.redirect('/home.html');
@@ -90,13 +87,6 @@ lib.getLoginPage = function(req,res) {
   res.write(file.replace('Bad_login',req.cookies.message || ""));
   res.end();
 }
-lib.serveTodo = function(req,res) {
-  let todoId = req.url.split('-').pop();
-  let action = req.url.split('-').shift();
-  if(action=='/todoId'){
-    res.setHeader('Set-Cookie',`todoId=${todoId}`)
-    res.redirect('/aTodo.html');
-  }
-}
+
 
 module.exports = lib;
