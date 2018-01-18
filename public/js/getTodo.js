@@ -8,7 +8,11 @@ const getItems = function(todo) {
   let itemIds = Object.keys(todo.items);
   let itemView='';
   itemIds.forEach(itemId=>{
-    itemView += `<h3><input type='checkbox'> ${todo.items[itemId].objective}</h3></hr>`
+    if(todo.items[itemId]._isDone){
+      itemView += `<h3><input type='checkbox' checked> ${todo.items[itemId].objective}</h3></hr>`
+    }else {
+      itemView += `<h3><input type='checkbox'> ${todo.items[itemId].objective}</h3></hr>`
+    }
   })
   return itemView;
 }

@@ -1,6 +1,6 @@
-const DefaultHandler = require('./defaultHandler.js');
+const UserHandler = require('./userHandler.js');
 
-class LoadUserHandler extends DefaultHandler{
+class LoadUserHandler extends UserHandler{
   constructor() {
     super();
   }

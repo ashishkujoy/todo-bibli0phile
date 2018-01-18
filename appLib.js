@@ -72,6 +72,8 @@ lib.deleteTodo = function(req,res) {
   user.deleteTodo(req.cookies.todoId);
   writeJsonFile(res,allUser);
 }
-
+lib.editTodo = function(req,res) {
+  
+}
 
 module.exports = lib;
