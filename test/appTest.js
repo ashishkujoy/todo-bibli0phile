@@ -54,6 +54,51 @@ describe('app',()=>{
         })
       })
     })
+    describe('GET /todoList',()=>{
+      it('gives the all existing todo lists',done=>{
+        let user = {userName:"pallabi"};
+        let header = {cookie:"sessionid=12345"};
+        request(app,{
+          method:'GET',url:'/todoList',headers:header,user:user},res=>{
+          th.status_is_ok(res);
+          th.body_contains(res,'pallabi');
+          done();
+        })
+      })
+    })
+    describe('GET /createToDo',()=>{
+      it('should redirect to login page',done=>{
+        let user = {userName:"pallabi"};
+        let header = {cookie:"sessionid=12345"};
+        request(app,{
+          method:'GET',url:'/createToDo',headers:header,user:user},res=>{
+            th.status_is_ok(res);
+          done();
+        })
+      })
+    })
+    describe('GET /logout',()=>{
+      it('should redirect to login page',done=>{
+        let user = {userName:"pallabi"};
+        let header = {cookie:"sessionid=12345"};
+        request(app,{
+          method:'GET',url:'/logout',headers:header,user:user},res=>{
+            th.should_be_redirected_to(res,'/login');
+          done();
+        })
+      })
+    })
+    describe('GET /delete',()=>{
+      it('should delete a todo',done=>{
+        let user = {userName:"pallabi"};
+        let header = {cookie:"sessionid=12345"};
+        request(app,{
+          method:'GET',url:'/delete',headers:header,user:user},res=>{
+            th.should_be_redirected_to(res,'/viewToDo.html');
+          done();
+        })
+      })
+    })
   })
   describe('POST /login',()=>{
     it('redirects to guestBook for valid user',done=>{

@@ -33,7 +33,6 @@ class Todo {
   }
   removeItem(itemNo){
     delete this.items[itemNo];
-    this.itemNo--;
   }
   markItemAsDone(itemNo){
     this.items[itemNo].markAsDone();

@@ -19,7 +19,6 @@ class User {
   }
   deleteTodo(todoId) {
     delete this.allTodo[todoId];
-    this.todoNo--;
   }
   editTodoTitle(todoId,newTitle){
     this.allTodo[todoId].editTitle(newTitle);

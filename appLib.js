@@ -1,52 +1,37 @@
 const fs = require('fs');
-const timeStamp = require('./time.js').timeStamp;
 const User = require('./src/user.js');
 const Todo = require('./src/todo.js');
+const TodoItem = require('./src/todoItem.js');
 const registered_users = [{userName:'pallabi'},{userName:'sayima'}];
 let allUser = JSON.parse(fs.readFileSync('./data/todoList.json'));
-const toS = o=>JSON.stringify(o,null,2);
-const urlList=['/', '/home.html', '/logout', '/viewToDo', '/todoList', '/aTodo', '/createToDo', '/delete', '/edit'];
+
+const giveBehavior = function() {
+  if(allUser.length){
+    allUser.forEach(user=>{
+      user.__proto__ = new User().__proto__;
+      let todoIds = Object.keys(user.allTodo);
+      todoIds.forEach(todoId=>{
+        let todo = user.allTodo[todoId];
+        todo.__proto__ = new Todo().__proto__;
+        let itemIDs = Object.keys(todo.items);
+        itemIDs.forEach(itemId=>{
+          todo.items[itemId].__proto__ = new TodoItem().__proto__;
+        })
+      })
+    })
+  }
+}
+giveBehavior();
+
 
 const writeJsonFile = function(res,userData) {
   fs.writeFile('./data/todoList.json',JSON.stringify(userData,null,2));
   res.redirect('/viewToDo.html');
-  res.end();
 }
 lib = {};
+
 lib.redirectLoggedInUserToHome = (req,res)=>{
   if(req.urlIsOneOf(['/','/login']) && req.user) res.redirect('/home.html');
-}
-lib.redirectLoggedOutUserToLogin = (req,res)=>{
-  if(req.urlIsOneOf(urlList) && !req.user) res.redirect('/login');
-}
-lib.logRequest = (req,res)=>{
-  let text = ['------------------------------',
-    `${timeStamp()}`,
-    `${req.method} ${req.url}`,
-    `HEADERS=> ${toS(req.headers)}`,
-    `COOKIES=> ${toS(req.cookies)}`,
-    `BODY=> ${toS(req.body)}`,''].join('\n');
-  fs.appendFile('request.log',text,()=>{});
-  console.log(`${req.method} ${req.url}`);
-}
-lib.loadUser = (req,res)=>{
-  let sessionid = req.cookies.sessionid;
-  let user = registered_users.find(u=>u.sessionid==sessionid);
-  if(sessionid && user){
-    req.user = user;
-  }
-};
-lib.loginUser = function(req,res) {
-  let user = registered_users.find(u=>u.userName==req.body.userName);
-  if(!user) {
-    res.setHeader('Set-Cookie',"message=Login Failed; Max-Age=5");
-    res.redirect('/login');
-    return;
-  }
-  let sessionid = new Date().getTime();
-  res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
-  user.sessionid = sessionid;
-  res.redirect('/home.html');
 }
 lib.logoutUser = function(req,res) {
   res.setHeader('Set-Cookie',[`sessionid=0,Expires=${new Date(1).toUTCString()}`]);
@@ -62,7 +47,7 @@ lib.createATodo = function(req,res) {
   let user = allUser.find(u=>u.userName==req.user.userName);
   let newUser = user || new User(req.user.userName);
   let todo = newUser.addTodo(req.body.title,req.body.description);
-  let items = req.body.item;
+  let items = req.body.item || '';
   if(typeof(items)=='string'){
     todo.addItem(items);
   } else {
@@ -82,10 +67,10 @@ lib.getATodo = function(req,res) {
   res.write(JSON.stringify(todo));
   res.end();
 }
-lib.getLoginPage = function(req,res) {
-  let file = fs.readFileSync('./public/login.html').toString();
-  res.write(file.replace('Bad_login',req.cookies.message || ""));
-  res.end();
+lib.deleteTodo = function(req,res) {
+  let user = allUser.find(u=>u.userName==req.user.userName);
+  user.deleteTodo(req.cookies.todoId);
+  writeJsonFile(res,allUser);
 }
 
 

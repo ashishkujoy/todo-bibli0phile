@@ -42,7 +42,7 @@ describe('user',()=>{
       let user = new User('pallabi');
       user.addTodo('home','washing clothes');
       user.deleteTodo('0');
-      assert.deepEqual(user,{ userName: 'pallabi',allTodo: {},todoNo: 0 })
+      assert.deepEqual(user,{ userName: 'pallabi',allTodo: {},todoNo: 1 })
     })
   })
   describe('#editTodoTitle',()=>{
