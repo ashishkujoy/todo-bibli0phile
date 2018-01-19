@@ -2,7 +2,6 @@ const fs = require('fs');
 const User = require('./src/user.js');
 const Todo = require('./src/todo.js');
 const TodoItem = require('./src/todoItem.js');
-const registered_users = [{userName:'pallabi'},{userName:'sayima'}];
 let allUser = JSON.parse(fs.readFileSync('./data/todoList.json'));
 
 const giveBehavior = function() {
@@ -25,7 +24,7 @@ giveBehavior();
 
 
 const writeJsonFile = function(res,userData) {
-  fs.writeFile('./data/todoList.json',JSON.stringify(userData,null,2));
+  fs.writeFile('./data/todoList.json',JSON.stringify(userData,null,2),()=>{});
   res.redirect('/viewToDo.html');
 }
 lib = {};
@@ -61,10 +60,27 @@ lib.getAllTodos = function(req,res) {
   res.write(JSON.stringify(user)||"");
   res.end();
 }
+const toHtmlParagraph = function(text){
+  return `<h1>${text}</h1>`;
+}
+const getButton = function(item){
+  return `<button id=${item.getId()} onclick="deleteItem()">delete</button>`
+}
+
+const toHtmlItem = function(item){
+  let checkboxStatus = '';
+  if(item.status) checkboxStatus = 'checked'; 
+  return `<h3><input type='checkbox' onclick="changeStatus()" id="${item.getId()}" ${checkboxStatus}> ${item.getItem()} ${getButton(item)}</h3></hr>`
+}
+
 lib.getATodo = function(req,res) {
   let user = allUser.find(u=>u.userName==req.user.userName);
-  todo = user.getSingleTodo(req.cookies.todoId);
-  res.write(JSON.stringify(todo));
+  let todo = user.getSingleTodo(req.cookies.todoId);
+  let todoContent = {};
+  todoContent.title = toHtmlParagraph(todo.getTitle());
+  todoContent.description = toHtmlParagraph(todo.getDescription());
+  todoContent.items = todo.mapItems(toHtmlItem).join('<br>');
+  res.write(JSON.stringify(todoContent));
   res.end();
 }
 lib.deleteTodo = function(req,res) {
@@ -72,8 +88,24 @@ lib.deleteTodo = function(req,res) {
   user.deleteTodo(req.cookies.todoId);
   writeJsonFile(res,allUser);
 }
-lib.editTodo = function(req,res) {
-  
+lib.changeItemStatus = function(req,res){
+  let user = allUser.find(u=>u.userName==req.user.userName);
+  let todo = user.getSingleTodo(req.cookies.todoId);
+  todo.changeItemStatus(req.body.itemId);
+  fs.writeFile('./data/todoList.json',JSON.stringify(allUser,null,2),()=>{});
+  res.end();    
 }
+
+lib.deleteItem = function(req,res){
+  let user = allUser.find(u=>u.userName==req.user.userName);
+  let todo = user.getSingleTodo(req.cookies.todoId);
+  todo.removeItem(req.body.itemId);
+  fs.writeFile('./data/todoList.json',JSON.stringify(allUser,null,2));
+  res.write(JSON.stringify({"itemId":req.body.itemId}),()=>{});
+  res.end();  
+}
+// lib.editTodo = function(req,res) {
+  
+// }
 
 module.exports = lib;

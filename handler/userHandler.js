@@ -2,7 +2,7 @@
 const fs = require('fs');
 const registered_users = JSON.parse(fs.readFileSync('./data/user.json'));
 class UserHandler {
-  constructor() {
+  constructor(fs) {
     this.registered_users = registered_users;
   }
   getRegisteredUser(){

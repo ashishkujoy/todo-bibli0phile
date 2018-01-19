@@ -1,36 +1,44 @@
-const getTitle = function(todo) {
-  return `<h1>${todo.title}</h1>`;
-}
-const getDescription = function(todo) {
-  return `<h2>${todo.description}</h2>`;
-}
-const getItems = function(todo) {
-  let itemIds = Object.keys(todo.items);
-  let itemView='';
-  itemIds.forEach(itemId=>{
-    if(todo.items[itemId]._isDone){
-      itemView += `<h3><input type='checkbox' onclick="changeStatus()" checked> ${todo.items[itemId].objective}</h3></hr>`
-    }else {
-      itemView += `<h3><input type='checkbox' onclick="changeStatus()"> ${todo.items[itemId].objective}</h3></hr>`
-    }
-  })
-  return itemView;
-}
-
 const getTodoView = function () {
   function requestListener(){
     let userTodos = JSON.parse(this.responseText);
     let todoTitle = document.getElementById('title');
-    todoTitle.innerHTML = getTitle(userTodos);
+    todoTitle.innerHTML=userTodos.title;
     let todoDescription = document.getElementById('description');
-    todoDescription.innerHTML = getDescription(userTodos);
+    todoDescription.innerHTML=userTodos.description;
     let todoItems = document.getElementById('items');
-    todoItems.innerHTML = getItems(userTodos);
+    todoItems.innerHTML=userTodos.items;
   }
-  var oReq = new XMLHttpRequest();
-  oReq.addEventListener('load',requestListener);
-  oReq.open('get','/singletodo');
-  oReq.send();
+  return sendAjexRequest('get','/singletodo',requestListener);
+}
+
+const sendAjexRequest = function(method,url,callBack,reqBody){
+  var ajex = new XMLHttpRequest();
+  ajex.onload=callBack;
+  ajex.open(method,url);
+  ajex.send(reqBody||'');
+}
+
+let foo;
+const haveToRemoveItem = function(){
+  let itemId = JSON.parse(this.responseText).itemId;
+  let item = document.getElementById(itemId).parentElement;
+  let items = item.parentElement;
+  items.removeChild(item);
+}
+
+
+const deleteItem = function(){
+  let itemId = event.target.id;
+  let reqBody = `itemId=${itemId}`;
+  return sendAjexRequest('post','/deleteItem',haveToRemoveItem,reqBody)
+}
+const showStatus = function(){console.log('hello')};
+
+const changeStatus = function(){
+  let itemId = event.target.id;
+  let reqBody = `itemId=${itemId}`;
+  return sendAjexRequest('post','/changeItemStatus',showStatus,reqBody)
+  foo=event;
 }
 
 window.onload = getTodoView;

@@ -13,6 +13,9 @@ class Todo {
     this.items[this.itemNo] = item;
     this.itemNo++;
   }
+  getAllItems(){
+    return Object.values(this.items);
+  }
   getTitle(){
     return this.title;
   }
@@ -42,6 +45,15 @@ class Todo {
   }
   getItemStatus(itemNo){
     return this.items[itemNo].status;
+  }
+  mapItems(mapper){
+    let allItems = this.getAllItems();
+    debugger;
+    return allItems.map(mapper);
+  }
+  changeItemStatus(itemId){
+    let item = this.items[itemId];
+    item.changeStatus();
   }
 }
 

@@ -37,6 +37,8 @@ app.post('/login',postLoginHandler.getRequestHandler());
 app.get('/createToDo',lib.getCreateTodoPage);
 app.post('/createToDo',lib.createATodo);
 app.get('/delete',lib.deleteTodo);
+app.post('/changeItemStatus',lib.changeItemStatus);
+app.post('/deleteItem',lib.deleteItem);
 // app.get('/edit',lib.editTodo);
 app.postUse(compositeHandler.getRequestHandler());
 module.exports = app;

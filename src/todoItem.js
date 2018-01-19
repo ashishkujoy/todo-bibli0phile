@@ -19,6 +19,12 @@ class TodoItem {
   get status(){
     return this._isDone;
   }
+  getId(){
+    return this.id;
+  }
+  changeStatus(){
+    this._isDone = !this._isDone;
+  }
 }
 
 module.exports = TodoItem;
