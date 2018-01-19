@@ -9,9 +9,9 @@ const getItems = function(todo) {
   let itemView='';
   itemIds.forEach(itemId=>{
     if(todo.items[itemId]._isDone){
-      itemView += `<h3><input type='checkbox' checked> ${todo.items[itemId].objective}</h3></hr>`
+      itemView += `<h3><input type='checkbox' onclick="changeStatus()" checked> ${todo.items[itemId].objective}</h3></hr>`
     }else {
-      itemView += `<h3><input type='checkbox'> ${todo.items[itemId].objective}</h3></hr>`
+      itemView += `<h3><input type='checkbox' onclick="changeStatus()"> ${todo.items[itemId].objective}</h3></hr>`
     }
   })
   return itemView;
