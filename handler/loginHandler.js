@@ -1,9 +1,9 @@
 const DefaultHandler = require('./DefaultHandler.js');
 
 class LoginHandler extends DefaultHandler{
-  constructor() {
+  constructor(allUrl) {
     super();
-    this.allUrl = ['/', '/home.html', '/logout', '/viewToDo', '/todoList', '/aTodo', '/createToDo', '/delete', '/edit','/singletodo'];
+    this.allUrl = allUrl;
   }
   getValid(url){
     return this.allUrl.includes(url);

@@ -9,13 +9,15 @@ const LoginHandler = require('./handler/loginHandler.js');
 const GetLoginHandler = require('./handler/getLoginHandler.js');
 const PostLoginHandler = require('./handler/postLoginHandler.js');
 
+let urlList = ['/', '/home.html', '/logout', '/viewToDo', '/todoList', '/aTodo', '/createToDo', '/delete', '/edit','/singletodo'];
+
 const staticHandler = new StaticFileHandler('public');
 const serveTodoHandler = new ServeTodoHandler();
 const compositeHandler = new CompositeHandler();
 const logRequestHandler = new LogRequestHandler();
 const loadUserHandler = new LoadUserHandler();
-const loginHandler = new LoginHandler();
-const getLoginHandler = new GetLoginHandler();
+const loginHandler = new LoginHandler(urlList);
+const getLoginHandler = new GetLoginHandler('./public/login.html');
 const postLoginHandler = new PostLoginHandler();
 
 compositeHandler.addHandler(logRequestHandler);

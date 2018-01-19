@@ -1,8 +1,8 @@
-// let registered_users = [{userName:'pallabi'},{userName:'sayima'}];
-const fs = require('fs');
-const registered_users = JSON.parse(fs.readFileSync('./data/user.json'));
+let registered_users = [{userName:'pallabi'},{userName:'sayima'}];
+//const fs = require('fs');
+//const registered_users = JSON.parse(fs.readFileSync('./user.data/user.json'));
 class UserHandler {
-  constructor(fs) {
+  constructor() {
     this.registered_users = registered_users;
   }
   getRegisteredUser(){
