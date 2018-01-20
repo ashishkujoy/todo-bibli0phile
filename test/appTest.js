@@ -126,7 +126,7 @@ describe('app',()=>{
         url:'/changeItemStatus',
         method:'POST',
         body:'itemId=0',
-        headers:{cookie:`todoId=6; sessionid=${sessionid}`}
+        headers:{cookie:`todoId=4; sessionid=${sessionid}`}
       }
       request(app,options,res=>{
         th.status_is_ok(res);

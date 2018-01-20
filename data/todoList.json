@@ -55,28 +55,10 @@
           "0": {
             "id": 0,
             "objective": "",
-            "_isDone": false
+            "_isDone": true
           }
         },
         "itemNo": 1
-      },
-      "6": {
-        "id": 6,
-        "title": "lhjgkyftud",
-        "description": "lkhjghfgdh",
-        "items": {
-          "0": {
-            "id": 0,
-            "objective": "lkhgfhd",
-            "_isDone": true
-          },
-          "1": {
-            "id": 1,
-            "objective": "lmkhgfyd",
-            "_isDone": false
-          }
-        },
-        "itemNo": 2
       },
       "10": {
         "id": 10,

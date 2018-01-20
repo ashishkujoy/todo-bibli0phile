@@ -8,9 +8,6 @@ class CompositeHandler extends DefaultHandler {
   addHandler(handler){
     this.allHandlers.push(handler);
   }
-  // addMultipleHandlers(handlerList){
-  //   this.allHandlers.push(...handlerList);
-  // }
   execute(req,res){
     let index = 0;
     while(!res.finished && index<this.allHandlers.length){

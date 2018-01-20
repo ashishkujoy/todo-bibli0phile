@@ -63,22 +63,22 @@ lib.getAllTodos = function(req,res) {
 const toHtmlParagraph = function(text){
   return `<h1>${text}</h1>`;
 }
-const getButton = function(item){
-  return `<button id=${item.getId()} onclick="deleteItem()">delete</button>`
+const getButton = function(item,onclickFunction,buttonName){
+  return `<button id=${item.getId()} onclick="${onclickFunction}()">${buttonName}</button>`
 }
 
 const toHtmlItem = function(item){
   let checkboxStatus = '';
-  if(item.status) checkboxStatus = 'checked'; 
-  return `<h3><input type='checkbox' onclick="changeStatus()" id="${item.getId()}" ${checkboxStatus}> ${item.getItem()} ${getButton(item)}</h3></hr>`
+  if(item.status) checkboxStatus = 'checked';
+  return `<h3><input type='checkbox' onclick="changeStatus()" id="${item.getId()}" ${checkboxStatus}> ${item.getItem()}${getButton(item,'editItem','Edit')}${getButton(item,'deleteItem','Delete')}</h3></hr>`
 }
 
 lib.getATodo = function(req,res) {
   let user = allUser.find(u=>u.userName==req.user.userName);
   let todo = user.getSingleTodo(req.cookies.todoId);
   let todoContent = {};
-  todoContent.title = toHtmlParagraph(todo.getTitle());
-  todoContent.description = toHtmlParagraph(todo.getDescription());
+  todoContent.title = toHtmlParagraph("Title:"+todo.getTitle());
+  todoContent.description = toHtmlParagraph("Description:"+todo.getDescription());
   todoContent.items = todo.mapItems(toHtmlItem).join('<br>');
   res.write(JSON.stringify(todoContent));
   res.end();
@@ -93,7 +93,7 @@ lib.changeItemStatus = function(req,res){
   let todo = user.getSingleTodo(req.cookies.todoId);
   todo.changeItemStatus(req.body.itemId);
   fs.writeFile('./data/todoList.json',JSON.stringify(allUser,null,2),()=>{});
-  res.end();    
+  res.end();
 }
 
 lib.deleteItem = function(req,res){
@@ -102,10 +102,10 @@ lib.deleteItem = function(req,res){
   todo.removeItem(req.body.itemId);
   fs.writeFile('./data/todoList.json',JSON.stringify(allUser,null,2));
   res.write(JSON.stringify({"itemId":req.body.itemId}),()=>{});
-  res.end();  
+  res.end();
 }
 // lib.editTodo = function(req,res) {
-  
+
 // }
 
 module.exports = lib;
