@@ -54,8 +54,8 @@
         "items": {
           "0": {
             "id": 0,
-            "objective": "",
-            "_isDone": true
+            "objective": "testing on mocha test",
+            "_isDone": false
           }
         },
         "itemNo": 1

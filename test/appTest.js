@@ -5,6 +5,13 @@ process.env.COMMENT_STORE = "./testStore.json";
 let app = require('../app.js');
 let th = require('./testHelper.js');
 
+let sessionid;
+beforeEach(function(){
+  request(app,{method:'POST',url:'/login',body:'userName=pallabi'},res=>{
+    sessionid=res.headers['Set-Cookie'].split('=')[1];
+  })
+})
+
 describe('app',()=>{
   describe('GET /bad',()=>{
     it('responds with 404',done=>{
@@ -99,8 +106,6 @@ describe('app',()=>{
       })
     })
   })
-
-
   describe('POST /login',()=>{
     it('redirects to guestBook for valid user',done=>{
       request(app,{method:'POST',url:'/login',body:'userName=pallabi'},res=>{
@@ -118,10 +123,6 @@ describe('app',()=>{
   })
   describe('POST /changeItemStatus',()=>{
     it('it should change item status',done=>{
-      let sessionid;
-      request(app,{method:'POST',url:'/login',body:'userName=pallabi'},res=>{
-        sessionid=res.headers['Set-Cookie'].split('=')[1];
-      })
       let options ={
         url:'/changeItemStatus',
         method:'POST',
@@ -130,6 +131,21 @@ describe('app',()=>{
       }
       request(app,options,res=>{
         th.status_is_ok(res);
+        done();
+      })
+    })
+  })
+  describe('POST /editItem',function(){
+    it('should edit the description of specified todo item',function(done){
+        let options ={
+        url:'/editItem',
+        method:'POST',
+        body:'itemId=0&newObjective=testing on mocha test',
+        headers:{cookie:`todoId=4; sessionid=${sessionid}`}
+      }
+      request(app,options,res=>{
+        th.status_is_ok(res);
+        th.body_contains(res,'testing on mocha test')
         done();
       })
     })

@@ -4,18 +4,23 @@ const Todo = require('./src/todo.js');
 const TodoItem = require('./src/todoItem.js');
 let allUser = JSON.parse(fs.readFileSync('./data/todoList.json'));
 
+const regenerateItem = function(item,itemParentClass){
+  item.__proto__ = new itemParentClass().__proto__;
+}
+
+const regenerateTodos = function(todo,todoParentClass,itemParentClass){
+  todo.__proto__ = new todoParentClass().__proto__;
+  todo.forEachItem(function(item){
+    regenerateItem(item,itemParentClass)
+  })
+}
+
 const giveBehavior = function() {
   if(allUser.length){
     allUser.forEach(user=>{
       user.__proto__ = new User().__proto__;
-      let todoIds = Object.keys(user.allTodo);
-      todoIds.forEach(todoId=>{
-        let todo = user.allTodo[todoId];
-        todo.__proto__ = new Todo().__proto__;
-        let itemIDs = Object.keys(todo.items);
-        itemIDs.forEach(itemId=>{
-          todo.items[itemId].__proto__ = new TodoItem().__proto__;
-        })
+      user.forEachTodo(function(todo){
+        regenerateTodos(todo,Todo,TodoItem);
       })
     })
   }

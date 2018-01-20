@@ -26,6 +26,10 @@ class User {
   editTodoDescription(todoId,newDescription) {
     this.allTodo[todoId].editDescription(newDescription);
   }
+  forEachTodo(functionReference){
+    let todos = Object.values(this.allTodo);
+    todos.forEach(functionReference);
+  }
 }
 
 module.exports = User;

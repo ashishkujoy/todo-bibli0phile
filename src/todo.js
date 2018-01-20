@@ -54,6 +54,10 @@ class Todo {
     let item = this.items[itemId];
     item.changeStatus();
   }
+  forEachItem(functionReference){
+    let allItems = this.getAllItems();
+    allItems.forEach(functionReference);
+  }
 }
 
 module.exports = Todo;
