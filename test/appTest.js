@@ -4,13 +4,14 @@ let request = require('./requestSimulator.js');
 process.env.COMMENT_STORE = "./testStore.json";
 let app = require('../app.js');
 let th = require('./testHelper.js');
-let fs = require('fs');
+
 
 let sessionid;
 beforeEach(function(){
   request(app,{method:'POST',url:'/login',body:'userName=pallabi'},res=>{
     sessionid=res.headers['Set-Cookie'].split('=')[1];
   })
+  let fs = require('./customFs.js');
   app.initialize(fs);
 })
 
@@ -19,15 +20,6 @@ describe('app',()=>{
     it('responds with 404',done=>{
       request(app,{method:'GET',url:'/bad'},(res)=>{
         assert.equal(res.statusCode,404);
-        done();
-      })
-    })
-  })
-  describe('GET /login',()=>{
-    it('gives the login page',done=>{
-      request(app,{method:'GET',url:'/login'},res=>{
-        th.status_is_ok(res);
-        th.body_contains(res,'Login Page');
         done();
       })
     })
@@ -82,6 +74,7 @@ describe('app',()=>{
       request(app,{
         method:'GET',url:'/createToDo',headers:header,user:user},res=>{
           th.status_is_ok(res);
+          th.body_contains(res,'Create A ToDo')
         done();
       })
     })

@@ -17,6 +17,7 @@ lib.getCreateTodoPage = function(fs,req,res) {
   res.end();
 }
 lib.createATodo = function(userRegistry,req,res) {
+  debugger;
   let user = userRegistry.getAUser(req.user.userName);
   let newUser = user || new User(req.user.userName);
   let todo = newUser.addTodo(req.body.title,req.body.description);
@@ -31,6 +32,7 @@ lib.createATodo = function(userRegistry,req,res) {
   res.redirect('/viewToDo.html');
 }
 lib.getAllTodos = function(userRegistry,req,res) {
+  debugger;
   let user = userRegistry.getAUser(req.user.userName);
   res.write(JSON.stringify(user)||"");
   res.end();

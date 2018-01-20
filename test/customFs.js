@@ -115,14 +115,31 @@ let allUsers=[
     "todoNo": 21
   }
 ]
+let loginPage = `<title>Login Page</title></head><body><center><h1>LOGIN PAGE</h1>Bad_login`;
+let homepage = `<body><h1>TO-DO</h1><a href="/createToDo"><button type="button">Create To-Do</button></a><a href="/viewToDo.html">`;
+let createToDoPage = `<h1><a href="/home.html"><<</a>Create A ToDo</h1>username<form class="create" method="post">`
+let viewTodoPage = ` <a href="home.html"><< </a> View TO-DO</h1><br><br><div id="todolist"></div>`;
 
 fs.readFileSync = function(filePath,endcoding){
-  if(filePath=='./data/todoList.json'&&endcoding=='utf8'){
+  if(filePath=='./data/todoList.json'){
     return JSON.stringify(allUsers);
   }
+  contents ={
+    './public/login.html':loginPage,
+    '.public/home.html':homepage,
+    './public/createToDo.html':createToDoPage,
+    './public/viewToDo.html':viewTodoPage
+  }
+  return contents[filePath];
 }
 
 fs.writeFile = function(filePath,text){
   return this.text=text;
+}
+
+fs.existsSync = function(filePath){
+  let existingFiles = ['./public/login.html','.public/home.html',
+  './public/createToDo.html','./public/viewToDo.html']
+  return existingFiles.includes(filePath);
 }
 module.exports = fs;

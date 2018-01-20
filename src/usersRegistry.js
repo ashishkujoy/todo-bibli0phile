@@ -32,8 +32,10 @@ class UserRegistry {
   }
   load(){
     let userData = this.fs.readFileSync(this.storagePath,'utf8');
+    debugger;
     let users = giveBehavior(JSON.parse(userData));
-    this.users = users;
+    debugger;
+    this.users = users || [];
   }
   getAUser(userName){
     let user = this.users.find(u=>u.userName==userName);
