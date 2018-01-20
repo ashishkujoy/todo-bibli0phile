@@ -70,7 +70,8 @@ const getButton = function(item,onclickFunction,buttonName){
 const toHtmlItem = function(item){
   let checkboxStatus = '';
   if(item.status) checkboxStatus = 'checked';
-  return `<h3><input type='checkbox' onclick="changeStatus()" id="${item.getId()}" ${checkboxStatus}> ${item.getItem()}${getButton(item,'editItem','Edit')}${getButton(item,'deleteItem','Delete')}</h3></hr>`
+  return `<h3><input type='checkbox' onclick="changeStatus()" id="${item.getId()}" ${checkboxStatus}> 
+  <span>${item.getItem()}</span>${getButton(item,'editItem','Edit')}${getButton(item,'deleteItem','Delete')}</h3></hr>`
 }
 
 lib.getATodo = function(req,res) {
@@ -104,8 +105,18 @@ lib.deleteItem = function(req,res){
   res.write(JSON.stringify({"itemId":req.body.itemId}),()=>{});
   res.end();
 }
-// lib.editTodo = function(req,res) {
-
-// }
+lib.editItem = function(req,res) {
+  let user = allUser.find(u=>u.userName==req.user.userName);
+  let todo = user.getSingleTodo(req.cookies.todoId);
+  todo.editItem(req.body.itemId,req.body.newObjective);
+  let editedItem = todo.getItem(req.body.itemId);
+  fs.writeFile('./data/todoList.json',JSON.stringify(allUser,null,2));
+  let response = {};
+  response.newItem = toHtmlItem(editedItem)
+  response.itemId = req.body.itemId;
+  res.setHeader('Content-Type','application/json');
+  res.write(JSON.stringify(response));
+  res.end()
+}
 
 module.exports = lib;

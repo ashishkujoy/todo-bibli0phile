@@ -23,7 +23,7 @@ class Todo {
     return this.description;
   }
   getItem(itemNo){
-    return this.items[itemNo].getItem();
+    return this.items[itemNo];
   }
   editTitle(newTitle){
     this.title = newTitle;
@@ -48,7 +48,6 @@ class Todo {
   }
   mapItems(mapper){
     let allItems = this.getAllItems();
-    debugger;
     return allItems.map(mapper);
   }
   changeItemStatus(itemId){

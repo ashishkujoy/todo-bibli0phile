@@ -28,8 +28,8 @@
         "items": {
           "0": {
             "id": 0,
-            "objective": "mkm",
-            "_isDone": true
+            "objective": "something",
+            "_isDone": false
           }
         },
         "itemNo": 1
