@@ -1,37 +1,6 @@
-const fs = require('fs');
 const User = require('./src/user.js');
 const Todo = require('./src/todo.js');
-const TodoItem = require('./src/todoItem.js');
-let allUser = JSON.parse(fs.readFileSync('./data/todoList.json'));
 
-const regenerateItem = function(item,itemParentClass){
-  item.__proto__ = new itemParentClass().__proto__;
-}
-
-const regenerateTodos = function(todo,todoParentClass,itemParentClass){
-  todo.__proto__ = new todoParentClass().__proto__;
-  todo.forEachItem(function(item){
-    regenerateItem(item,itemParentClass)
-  })
-}
-
-const giveBehavior = function() {
-  if(allUser.length){
-    allUser.forEach(user=>{
-      user.__proto__ = new User().__proto__;
-      user.forEachTodo(function(todo){
-        regenerateTodos(todo,Todo,TodoItem);
-      })
-    })
-  }
-}
-giveBehavior();
-
-
-const writeJsonFile = function(res,userData) {
-  fs.writeFile('./data/todoList.json',JSON.stringify(userData,null,2),()=>{});
-  res.redirect('/viewToDo.html');
-}
 lib = {};
 
 lib.redirectLoggedInUserToHome = (req,res)=>{
@@ -42,13 +11,13 @@ lib.logoutUser = function(req,res) {
   delete req.user.sessionid;
   res.redirect('/login');
 }
-lib.getCreateTodoPage = function(req,res) {
+lib.getCreateTodoPage = function(fs,req,res) {
   let file = fs.readFileSync('./public/createToDo.html').toString();
   res.write(file.replace('username',`${req.user.userName}` || ""));
   res.end();
 }
-lib.createATodo = function(req,res) {
-  let user = allUser.find(u=>u.userName==req.user.userName);
+lib.createATodo = function(userRegistry,req,res) {
+  let user = userRegistry.getAUser(req.user.userName);
   let newUser = user || new User(req.user.userName);
   let todo = newUser.addTodo(req.body.title,req.body.description);
   let items = req.body.item || '';
@@ -57,11 +26,12 @@ lib.createATodo = function(req,res) {
   } else {
     items.forEach((elem)=>todo.addItem(elem));
   }
-  if(!user) allUser.unshift(newUser);
-  writeJsonFile(res,allUser);
+  if(!user) userRegistry.addNewUser(newUser);
+  userRegistry.write();
+  res.redirect('/viewToDo.html');
 }
-lib.getAllTodos = function(req,res) {
-  let user = allUser.find(u=>u.userName==req.user.userName);
+lib.getAllTodos = function(userRegistry,req,res) {
+  let user = userRegistry.getAUser(req.user.userName);
   res.write(JSON.stringify(user)||"");
   res.end();
 }
@@ -79,8 +49,8 @@ const toHtmlItem = function(item){
   <span>${item.getItem()}</span>${getButton(item,'editItem','Edit')}${getButton(item,'deleteItem','Delete')}</h3></hr>`
 }
 
-lib.getATodo = function(req,res) {
-  let user = allUser.find(u=>u.userName==req.user.userName);
+lib.getATodo = function(userRegistry,req,res) {
+  let user = userRegistry.getAUser(req.user.userName);
   let todo = user.getSingleTodo(req.cookies.todoId);
   let todoContent = {};
   todoContent.title = toHtmlParagraph("Title:"+todo.getTitle());
@@ -89,33 +59,34 @@ lib.getATodo = function(req,res) {
   res.write(JSON.stringify(todoContent));
   res.end();
 }
-lib.deleteTodo = function(req,res) {
-  let user = allUser.find(u=>u.userName==req.user.userName);
+lib.deleteTodo = function(userRegistry,req,res) {
+  let user = userRegistry.getAUser(req.user.userName);
   user.deleteTodo(req.cookies.todoId);
-  writeJsonFile(res,allUser);
+  userRegistry.write()
+  res.redirect('/viewToDo.html');
 }
-lib.changeItemStatus = function(req,res){
-  let user = allUser.find(u=>u.userName==req.user.userName);
+lib.changeItemStatus = function(userRegistry,req,res){
+  let user = userRegistry.getAUser(req.user.userName);  
   let todo = user.getSingleTodo(req.cookies.todoId);
   todo.changeItemStatus(req.body.itemId);
-  fs.writeFile('./data/todoList.json',JSON.stringify(allUser,null,2),()=>{});
+  userRegistry.write();
   res.end();
 }
 
-lib.deleteItem = function(req,res){
-  let user = allUser.find(u=>u.userName==req.user.userName);
+lib.deleteItem = function(userRegistry,req,res){
+  let user = userRegistry.getAUser(req.user.userName);    
   let todo = user.getSingleTodo(req.cookies.todoId);
   todo.removeItem(req.body.itemId);
-  fs.writeFile('./data/todoList.json',JSON.stringify(allUser,null,2));
+  userRegistry.write();
   res.write(JSON.stringify({"itemId":req.body.itemId}),()=>{});
   res.end();
 }
-lib.editItem = function(req,res) {
-  let user = allUser.find(u=>u.userName==req.user.userName);
+lib.editItem = function(userRegistry,req,res) {
+  let user = userRegistry.getAUser(req.user.userName);      
   let todo = user.getSingleTodo(req.cookies.todoId);
   todo.editItem(req.body.itemId,req.body.newObjective);
   let editedItem = todo.getItem(req.body.itemId);
-  fs.writeFile('./data/todoList.json',JSON.stringify(allUser,null,2));
+  userRegistry.write();  
   let response = {};
   response.newItem = toHtmlItem(editedItem)
   response.itemId = req.body.itemId;

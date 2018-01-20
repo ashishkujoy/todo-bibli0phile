@@ -8,8 +8,11 @@ const LoadUserHandler = require('./handler/loadUserHandler.js');
 const LoginHandler = require('./handler/loginHandler.js');
 const GetLoginHandler = require('./handler/getLoginHandler.js');
 const PostLoginHandler = require('./handler/postLoginHandler.js');
-
+const UserRegistry = require('./src/usersRegistry.js');
 let urlList = ['/', '/home.html', '/logout', '/viewToDo', '/todoList', '/aTodo', '/createToDo', '/delete', '/edit','/singletodo'];
+let fs;
+let userRegistry; 
+
 
 const staticHandler = new StaticFileHandler('public');
 const serveTodoHandler = new ServeTodoHandler();
@@ -31,16 +34,37 @@ const app = WebApp.create();
 app.use(compositeHandler.getRequestHandler());
 app.use(lib.redirectLoggedInUserToHome);
 
-app.get('/todoList',lib.getAllTodos);
-app.get('/singletodo',lib.getATodo);
+app.get('/todoList',(req,res)=>{
+  return lib.getAllTodos(userRegistry,req,res)
+});
+app.get('/singletodo',(req,res)=>{
+  return lib.getATodo(userRegistry,req,res)
+});
 app.get('/login',getLoginHandler.getRequestHandler());
 app.get('/logout',lib.logoutUser);
 app.post('/login',postLoginHandler.getRequestHandler());
-app.get('/createToDo',lib.getCreateTodoPage);
-app.post('/createToDo',lib.createATodo);
-app.get('/delete',lib.deleteTodo);
-app.post('/changeItemStatus',lib.changeItemStatus);
-app.post('/deleteItem',lib.deleteItem);
-app.post('/editItem',lib.editItem);
+app.get('/createToDo',(req,res)=>{
+  return lib.getCreateTodoPage(fs,req,res)
+});
+app.post('/createToDo',(req,res)=>{
+  return lib.createATodo(userRegistry,req,res)
+});
+app.get('/delete',(req,res)=>{
+  return lib.deleteTodo(userRegistry,req,res)
+});
+app.post('/changeItemStatus',(req,res)=>{
+  return lib.changeItemStatus(userRegistry,req,res)
+});
+app.post('/deleteItem',(req,res)=>{
+  return lib.deleteItem(userRegistry,req,res)
+});
+app.post('/editItem',(req,res)=>{
+  return lib.editItem(userRegistry,req,res)
+});
 app.postUse(compositeHandler.getRequestHandler());
+app.initialize = function(customFs){
+  fs = customFs;
+  userRegistry = new UserRegistry(customFs,'./data/todoList.json');
+  userRegistry.load();
+}
 module.exports = app;

@@ -1,4 +1,5 @@
-[
+const fs = {text:''};
+let allUsers=[
   {
     "userName": "sayima",
     "allTodo": {
@@ -28,8 +29,8 @@
         "items": {
           "0": {
             "id": 0,
-            "objective": "mkmfdsaffd",
-            "_isDone": false
+            "objective": "mkm",
+            "_isDone": true
           }
         },
         "itemNo": 1
@@ -54,7 +55,7 @@
         "items": {
           "0": {
             "id": 0,
-            "objective": "testing on mocha test",
+            "objective": "",
             "_isDone": true
           }
         },
@@ -114,3 +115,14 @@
     "todoNo": 21
   }
 ]
+
+fs.readFileSync = function(filePath,endcoding){
+  if(filePath=='./data/todoList.json'&&endcoding=='utf8'){
+    return JSON.stringify(allUsers);
+  }
+}
+
+fs.writeFile = function(filePath,text){
+  return this.text=text;
+}
+module.exports = fs;

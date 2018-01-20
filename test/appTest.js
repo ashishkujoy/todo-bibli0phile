@@ -4,12 +4,14 @@ let request = require('./requestSimulator.js');
 process.env.COMMENT_STORE = "./testStore.json";
 let app = require('../app.js');
 let th = require('./testHelper.js');
+let fs = require('fs');
 
 let sessionid;
 beforeEach(function(){
   request(app,{method:'POST',url:'/login',body:'userName=pallabi'},res=>{
     sessionid=res.headers['Set-Cookie'].split('=')[1];
   })
+  app.initialize(fs);
 })
 
 describe('app',()=>{
