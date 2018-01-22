@@ -64,6 +64,9 @@ app.post('/editItem',(req,res)=>{
 app.post('/addNewItem',(req,res)=>{
   lib.addNewItem(userRegistry,req,res);
 })
+app.post('/editTodoTitle',(req,res)=>{
+  lib.editTodoTitle(userRegistry,req,res);
+})
 app.postUse(compositeHandler.getRequestHandler());
 app.initialize = function(customFs){
   fs = customFs;

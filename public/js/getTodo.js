@@ -28,7 +28,7 @@ const createInputElement = function(type,value,id){
 
 const createButton = function(innerText,id,onclickFunc){
   let button = document.createElement('button');
-  button.id = id;
+  button.id = id||"";
   button.innerText = innerText;
   button.onclick = onclickFunc;
   return button;
@@ -92,8 +92,29 @@ const addNewItem = function(){
   let itemObjective = document.getElementById("newItem").value;
   let reqBody = `itemObjective=${itemObjective}`;
   sendAjexRequest('POST','/addNewItem',showNewItem,reqBody);
-  console.log('saving');
-  foo = event;
+}
+
+const showEditedTitle = function(){
+  let editTitleBlock = document.getElementById("editTitleBlock");
+  let newTitle = document.createElement('h4');
+  newTitle.innerHTML = this.responseText;
+  editTitleBlock.replaceWith(newTitle); 
+}
+
+const saveEditedTitle =function(){
+  let newTitle = document.getElementById('newTitle').value;
+  let reqBody = `newTitle=${newTitle}`;
+  sendAjexRequest('POST','/editTodoTitle',showEditedTitle,reqBody);
+}
+const editTodoTitle = function(){
+  let titleDiv = document.getElementById('title');
+  let title = titleDiv.innerText;
+  title = title.replace('Title:','').replace(' edit','');
+  let editTitleBlock = document.createElement('h1');
+  editTitleBlock.id = "editTitleBlock";
+  editTitleBlock.appendChild(createInputElement('text',title,"newTitle"));
+  editTitleBlock.appendChild(createButton('Save',null,saveEditedTitle));
+  titleDiv.replaceWith(editTitleBlock);
 }
 
 const showTextBoxForNewItems = function(){

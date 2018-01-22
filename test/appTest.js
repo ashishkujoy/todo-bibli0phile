@@ -79,6 +79,22 @@ describe('app',()=>{
       })
     })
   })
+  describe('GET /singletodo',()=>{
+    it('should give a specified todo',function(done){
+      let options ={
+        url:'/singletodo',
+        method:'GET',
+        headers:{cookie:`todoId=4; sessionid=${sessionid}`}
+      };
+      request(app,options,res=>{
+        th.status_is_ok(res);
+        th.body_contains(res,"vsnbm,");
+        th.body_contains(res,"fhghm,");
+        th.body_contains(res,"edit")
+        done()
+      })
+    })
+  })
   describe('GET /logout',()=>{
     it('should redirect to login page',done=>{
       let user = {userName:"pallabi"};
@@ -156,6 +172,21 @@ describe('app',()=>{
       request(app,options,res=>{
         th.status_is_ok(res);
         th.body_contains(res,'testing on nyc')
+        done();
+      })
+    })
+  })
+  describe("POST /editTodoTitle",function(){
+    it('should replace todo title with new one',function(done){
+      let options ={
+        url:'/editTodoTitle',
+        method:'POST',
+        body:'newTitle=testing title',
+        headers:{cookie:`todoId=4; sessionid=${sessionid}`}
+      };
+      request(app,options,res=>{
+        th.status_is_ok(res);
+        th.body_contains(res,'testing title')
         done();
       })
     })

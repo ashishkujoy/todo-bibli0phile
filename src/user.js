@@ -22,6 +22,7 @@ class User {
   }
   editTodoTitle(todoId,newTitle){
     this.allTodo[todoId].editTitle(newTitle);
+    return newTitle;
   }
   editTodoDescription(todoId,newDescription) {
     this.allTodo[todoId].editDescription(newDescription);
