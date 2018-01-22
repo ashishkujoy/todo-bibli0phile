@@ -26,6 +26,7 @@ class User {
   }
   editTodoDescription(todoId,newDescription) {
     this.allTodo[todoId].editDescription(newDescription);
+    return newDescription;
   }
   forEachTodo(functionReference){
     let todos = Object.values(this.allTodo);

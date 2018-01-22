@@ -79,6 +79,28 @@ describe('app',()=>{
       })
     })
   })
+  describe('POST /createToDo',function(){
+    let options = {
+      url:'/createToDo',
+      method:'POST'
+    }
+    it('should add a todo in user todos',function(done){
+      options.headers={cookie:`sessionid=${sessionid}`}
+      options.body='title=testing&description=foo&item=["1","2"]',
+      request(app,options,res=>{
+        th.should_be_redirected_to(res,'/viewToDo.html');
+        done();
+      })
+    })
+    it('should add a todo in user todos even when there is no item',function(done){
+      options.headers={cookie:`sessionid=${sessionid}`}
+      options.body='title=testing&description=foo&item=""',
+      request(app,options,res=>{
+        th.should_be_redirected_to(res,'/viewToDo.html');
+        done();
+      })
+    })
+  })
   describe('GET /singletodo',()=>{
     it('should give a specified todo',function(done){
       let options ={
@@ -113,6 +135,21 @@ describe('app',()=>{
       request(app,{
         method:'GET',url:'/delete',headers:header,user:user},res=>{
           th.should_be_redirected_to(res,'/viewToDo.html');
+        done();
+      })
+    })
+  })
+  describe('POST /deleteItem',function(){
+    it('should delete a specified todoItem from user todo',function(done){
+      let options ={
+        url:'/deleteItem',
+        method:'POST',
+        body:'itemId=0',
+        headers:{cookie:`todoId=4; sessionid=${sessionid}`}
+      };
+      request(app,options,res=>{
+        th.status_is_ok(res);
+        th.body_contains(res,"itemId");
         done();
       })
     })
@@ -187,6 +224,21 @@ describe('app',()=>{
       request(app,options,res=>{
         th.status_is_ok(res);
         th.body_contains(res,'testing title')
+        done();
+      })
+    })
+  })
+  describe("POST /editTodoDescription",function(){
+    it('should replace todo description with new description',function(done){
+      let options ={
+        url:'/editTodoDescription',
+        method:'POST',
+        body:'newDescription=testing Description',
+        headers:{cookie:`todoId=4; sessionid=${sessionid}`}
+      };
+      request(app,options,res=>{
+        th.status_is_ok(res);
+        th.body_contains(res,'testing Description')
         done();
       })
     })

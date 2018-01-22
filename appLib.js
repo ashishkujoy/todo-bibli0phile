@@ -17,22 +17,22 @@ lib.getCreateTodoPage = function(fs,req,res) {
   res.end();
 }
 lib.createATodo = function(userRegistry,req,res) {
-  debugger;
   let user = userRegistry.getAUser(req.user.userName);
   let newUser = user || new User(req.user.userName);
   let todo = newUser.addTodo(req.body.title,req.body.description);
-  let items = req.body.item || '';
-  if(typeof(items)=='string'){
-    todo.addItem(items);
-  } else {
-    items.forEach((elem)=>todo.addItem(elem));
+  let items = req.body.item;
+  if(items){
+    if(typeof(items)=='string'){
+        todo.addItem(items);
+    } else {
+      items.forEach((elem)=>todo.addItem(elem));
+    }
   }
   if(!user) userRegistry.addNewUser(newUser);
   userRegistry.write();
   res.redirect('/viewToDo.html');
 }
 lib.getAllTodos = function(userRegistry,req,res) {
-  debugger;
   let user = userRegistry.getAUser(req.user.userName);
   res.write(JSON.stringify(user)||"");
   res.end();
@@ -123,6 +123,19 @@ lib.editTodoTitle = function(userRegistry,req,res){
   }
   let titleHTMLformat = toHtmlParagraph(options);
   deliverFile(res,'text/html',titleHTMLformat);
+}
+lib.editTodoDescription=function(userRegistry,req,res){
+  let user = userRegistry.getAUser(req.user.userName);
+  let todoDescription = user.editTodoDescription(req.cookies.todoId,req.body.newDescription);
+  let options = {
+    text:`Description:${todoDescription}`,
+    id:'description',
+    buttonId:'',
+    onClickFunc:'editTodoDescription',
+    buttonName:'edit'
+  }
+  let descriptionHTMLformat = toHtmlParagraph(options);
+  deliverFile(res,'text/html',descriptionHTMLformat);
 }
 
 const deliverFile = function(res,contentType,file){

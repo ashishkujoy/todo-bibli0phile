@@ -127,4 +127,28 @@ const showTextBoxForNewItems = function(){
   addItem.replaceWith(saveButton);
 }
 
+const showEditedDescription = function(){
+  let editDescriptionBlock = document.getElementById("editDescriptionBlock");
+  let newDescription = document.createElement('h4');
+  newDescription.innerHTML = this.responseText;
+  editDescriptionBlock.replaceWith(newDescription)
+}
+
+const saveEditedDescription = function(){
+  let newDescription = document.getElementById('newDescription').value;
+  let reqBody = `newDescription=${newDescription}`;
+  sendAjexRequest('POST','/editTodoDescription',showEditedDescription,reqBody);
+}
+
+const editTodoDescription = function(){
+  let descriptionDiv = document.getElementById('description');
+  let description = descriptionDiv.innerText;
+  description = description.replace('Description:','').replace(' edit','');
+  let editDescriptionBlock = document.createElement('h1');
+  editDescriptionBlock.id = "editDescriptionBlock";
+  editDescriptionBlock.appendChild(createInputElement('text',description,"newDescription"));
+  editDescriptionBlock.appendChild(createButton('Save',null,saveEditedDescription));
+  descriptionDiv.replaceWith(editDescriptionBlock);
+}
+
 window.onload = getTodoView;
