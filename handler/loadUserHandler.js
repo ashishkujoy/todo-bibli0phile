@@ -9,7 +9,7 @@ class LoadUserHandler extends UserHandler{
   }
   getUser(req){
     return this.getRegisteredUser().find(u=>{
-      return u.sessionid==this.getSessionID(req);
+      return u.session.includes(+this.getSessionID(req));
     });
   }
   execute(req){

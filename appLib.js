@@ -1,6 +1,29 @@
 const User = require('./src/user.js');
 const Todo = require('./src/todo.js');
 
+
+const toHtmlParagraph = function(options){
+  return `<h1 id="${options.id}">${options.text} ${getButton(options.buttonId,options.onClickFunc,options.buttonName)}</h1>`
+}
+
+const getButton = function(id,onclickFunction,buttonName){
+  return `<button id="${id}" onclick="${onclickFunction}()">${buttonName}</button>`
+}
+
+const toHtmlItem = function(item){
+  let checkboxStatus = '';
+  if(item.status) checkboxStatus = 'checked';
+  return `<h3><input type='checkbox' onclick="changeStatus()" id="${item.getId()}" ${checkboxStatus}> 
+  <span>${item.getItem()}</span>${getButton(item.getId(),'editItem','Edit')}${getButton(item.getId(),'deleteItem','Delete')}</h3></hr>`
+}
+
+const deliverFile = function(res,contentType,file){
+  res.setHeader('Content-Type',contentType);  
+  res.write(file||'');
+  res.end();
+}
+
+
 lib = {};
 
 lib.redirectLoggedInUserToHome = (req,res)=>{
@@ -38,20 +61,6 @@ lib.getAllTodos = function(userRegistry,req,res) {
   res.end();
 }
 
-const toHtmlParagraph = function(options){
-  return `<h1 id="${options.id}">${options.text} ${getButton(options.buttonId,options.onClickFunc,options.buttonName)}</h1>`
-}
-
-const getButton = function(id,onclickFunction,buttonName){
-  return `<button id="${id}" onclick="${onclickFunction}()">${buttonName}</button>`
-}
-
-const toHtmlItem = function(item){
-  let checkboxStatus = '';
-  if(item.status) checkboxStatus = 'checked';
-  return `<h3><input type='checkbox' onclick="changeStatus()" id="${item.getId()}" ${checkboxStatus}> 
-  <span>${item.getItem()}</span>${getButton(item.getId(),'editItem','Edit')}${getButton(item.getId(),'deleteItem','Delete')}</h3></hr>`
-}
 
 lib.getATodo = function(userRegistry,req,res) {
   let user = userRegistry.getAUser(req.user.userName);
@@ -138,10 +147,6 @@ lib.editTodoDescription=function(userRegistry,req,res){
   deliverFile(res,'text/html',descriptionHTMLformat);
 }
 
-const deliverFile = function(res,contentType,file){
-  res.setHeader('Content-Type',contentType);  
-  res.write(file||'');
-  res.end();
-}
+
 
 module.exports = lib;

@@ -131,7 +131,7 @@ describe('app',()=>{
   describe('GET /delete',()=>{
     it('should delete a todo',done=>{
       let user = {userName:"pallabi"};
-      let header = {cookie:"sessionid=12345"};
+      let header = {cookie:`sessionid=${sessionid}`};
       request(app,{
         method:'GET',url:'/delete',headers:header,user:user},res=>{
           th.should_be_redirected_to(res,'/viewToDo.html');

@@ -1,4 +1,4 @@
-let registered_users = [{userName:'pallabi'},{userName:'sayima'}];
+let registered_users = [{userName:'pallabi',session:[]},{userName:'sayima',session:[]}];
 class UserHandler {
   constructor() {
     this.registered_users = registered_users;
