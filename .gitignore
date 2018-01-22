@@ -2,3 +2,5 @@ node_modules/
 *.log
 .DS_Store
 data/todoList.json
+.nyc_output
+coverage/

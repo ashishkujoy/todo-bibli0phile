@@ -1,5 +1,5 @@
-let getTextBox = function() {
-  let boxSpace = document.getElementById('additem');
+let getTextBox = function(boxSpaceId) {
+  let boxSpace = document.getElementById(boxSpaceId);
   let box = document.createElement('textarea');
   let newLine =document.createElement('br');
   box.name = 'item';

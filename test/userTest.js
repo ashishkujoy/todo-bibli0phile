@@ -1,22 +1,17 @@
 const chai = require('chai');
 const assert = chai.assert;
 const User = require('../src/user.js');
+const Todo = require('../src/todo.js');
 describe('user',()=>{
   describe('#addTodo',()=>{
-    it('adding new todo should be added to user allTodo',()=>{
+    it('it should add a todo in allTodos',()=>{
       let user = new User('pallabi');
-      user.addTodo('home','washing clothes');
-      let expected = { userName: 'pallabi',allTodo:{ '0':{ id: 0,
-        title: 'home',description: 'washing clothes',items: {},
-        itemNo: 0 } }, todoNo: 1 }
-      assert.deepEqual(user,expected);
-      user.addTodo('home','sleepng');
-      expected= {userName: 'pallabi',allTodo:
-   { '0': {id: 0,title: 'home',description: 'washing clothes',
-        items: {},itemNo: 0 },
-     '1': {id: 1,title: 'home',description: 'sleepng',items: {},
-        itemNo: 0 } },todoNo: 2 }
-    assert.deepEqual(user,expected);
+      let actual = user.addTodo('home','washing clothes');
+      let expected = new Todo(0,'home','washing clothes');
+      assert.deepEqual(actual,expected);
+      actual=user.addTodo('home','sleepng');
+      expected = new Todo(1,'home','sleepng');
+      assert.deepEqual(actual,expected);
     })
   })
   describe('#getTodo',()=>{
@@ -24,7 +19,7 @@ describe('user',()=>{
       let user = new User('pallabi');
       assert.deepEqual({},user.getTodo());
       user.addTodo('home','washing clothes');
-      let expected = { '0': {id: 0,title: 'home',description: 'washing clothes',items: {},itemNo: 0 } };
+      let expected = { '0': new Todo(0,'home','washing clothes') };
       assert.deepEqual(expected,user.getTodo());
     })
   })
@@ -32,9 +27,9 @@ describe('user',()=>{
     it('it should return a particular todo baased on todoId',()=>{
       let user = new User('pallabi');
       user.addTodo('home','washing clothes');
-      user.addTodo('home','sleepng');
-      assert.deepEqual(user.getSingleTodo('0'),{id: 0,title: 'home',description: 'washing clothes',items: {},itemNo: 0 });
-      assert.deepEqual(user.getSingleTodo('1'),{id: 1,title: 'home',description: 'sleepng',items: {},itemNo: 0 })
+      user.addTodo('home','sleeping');
+      assert.deepEqual(user.getSingleTodo('0'),new Todo(0,'home','washing clothes'));
+      assert.deepEqual(user.getSingleTodo('1'),new Todo(1,'home','sleeping'))
     })
   })
   describe('#deleteTodo',()=>{
@@ -49,22 +44,18 @@ describe('user',()=>{
     it('this should replace the old title with new one',()=>{
       let user = new User('pallabi');
       user.addTodo('home','washing clothes');
+      assert.deepEqual(user.getSingleTodo(0),new Todo(0,'home','washing clothes'))
       user.editTodoTitle('0','homeWork');
-      let expected = {userName: 'pallabi',allTodo:
-   { '0': {id: 0,title: 'homeWork',description: 'washing clothes',items: {},
-        itemNo: 0 } },todoNo: 1 };
-        assert.deepEqual(user,expected);
+      assert.deepEqual(user.getSingleTodo(0),new Todo(0,'homeWork','washing clothes'))
     })
   })
   describe('#editTodoDescription',()=>{
     it('should replace old description with new one',()=>{
       let user = new User('pallabi');
       user.addTodo('home','washing clothes');
+      assert.deepEqual(user.getSingleTodo(0),new Todo(0,'home','washing clothes'));
       user.editTodoDescription('0','sleeping');
-      let expected ={userName: 'pallabi',allTodo:
-   { '0': {id: 0,title: 'home',description: 'sleeping',items: {},
-        itemNo: 0 } },todoNo: 1 };
-        assert.deepEqual(user,expected);
+      assert.deepEqual(user.getSingleTodo(0),new Todo(0,'home','sleeping'));
     })
   })
 })

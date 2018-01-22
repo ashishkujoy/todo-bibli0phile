@@ -1,4 +1,5 @@
 const UsersRegistry = require('../src/usersRegistry.js');
+const User = require('../src/user.js');
 const assert = require('chai').assert;
 let customFs;
 let userRegistry;
@@ -25,6 +26,13 @@ describe('userRegistry',function(){
       customFs = JSON.stringify(customFs);
       assert.include(customFs,'pallabi')
       assert.include(customFs,"objective")
+    })
+  })
+  describe('addNewUser',function(){
+    it('add a given user in allUsers',function(){
+      assert.isUndefined(userRegistry.getAUser('ashish'));
+      userRegistry.addNewUser(new User('ashish'));
+      assert.deepEqual(userRegistry.getAUser('ashish'),new User('ashish'));
     })
   })
 })

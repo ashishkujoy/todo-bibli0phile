@@ -13,15 +13,13 @@ const regenerateTodos = function(todo,todoParentClass,itemParentClass){
 }
 
 const giveBehavior = function(allUser) {
-  if(allUser.length){
-    allUser.forEach(user=>{
-      user.__proto__ = new User().__proto__;
-      user.forEachTodo(function(todo){
-        regenerateTodos(todo,Todo,TodoItem);
-      })
+  allUser.forEach(user=>{
+    user.__proto__ = new User().__proto__;
+    user.forEachTodo(function(todo){
+      regenerateTodos(todo,Todo,TodoItem);
     })
-    return allUser;
-  }
+  })
+  return allUser;
 }
 
 class UserRegistry {
@@ -32,9 +30,7 @@ class UserRegistry {
   }
   load(){
     let userData = this.fs.readFileSync(this.storagePath,'utf8');
-    debugger;
     let users = giveBehavior(JSON.parse(userData));
-    debugger;
     this.users = users || [];
   }
   getAUser(userName){

@@ -9,9 +9,10 @@ class Todo {
     this.itemNo = 0;
   }
   addItem(objective){
-    let item = new TodoItem(this.itemNo,objective);
-    this.items[this.itemNo] = item;
+    let itemId = this.itemNo;
+    this.items[this.itemNo] = new TodoItem(itemId,objective);
     this.itemNo++;
+    return itemId;
   }
   getAllItems(){
     return Object.values(this.items);

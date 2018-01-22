@@ -57,9 +57,8 @@ lib.getATodo = function(userRegistry,req,res) {
   let todoContent = {};
   todoContent.title = toHtmlParagraph("Title:"+todo.getTitle());
   todoContent.description = toHtmlParagraph("Description:"+todo.getDescription());
-  todoContent.items = todo.mapItems(toHtmlItem).join('<br>');
-  res.write(JSON.stringify(todoContent));
-  res.end();
+  todoContent.items = todo.mapItems(toHtmlItem).join('');
+  deliverFile(res,'application/json',JSON.stringify(todoContent));
 }
 lib.deleteTodo = function(userRegistry,req,res) {
   let user = userRegistry.getAUser(req.user.userName);
@@ -80,8 +79,7 @@ lib.deleteItem = function(userRegistry,req,res){
   let todo = user.getSingleTodo(req.cookies.todoId);
   todo.removeItem(req.body.itemId);
   userRegistry.write();
-  res.write(JSON.stringify({"itemId":req.body.itemId}),()=>{});
-  res.end();
+  deliverFile(res,'application/json',JSON.stringify({"itemId":req.body.itemId}))
 }
 lib.editItem = function(userRegistry,req,res) {
   let user = userRegistry.getAUser(req.user.userName);      
@@ -92,9 +90,20 @@ lib.editItem = function(userRegistry,req,res) {
   let response = {};
   response.newItem = toHtmlItem(editedItem)
   response.itemId = req.body.itemId;
-  res.setHeader('Content-Type','application/json');
-  res.write(JSON.stringify(response));
-  res.end()
+  deliverFile(res,'application/json',JSON.stringify(response));
+}
+lib.addNewItem = function(userRegistry,req,res){
+  let user = userRegistry.getAUser(req.user.userName);      
+  let todo = user.getSingleTodo(req.cookies.todoId);
+  let itemId=todo.addItem(req.body.itemObjective);
+  let item = toHtmlItem(todo.getItem(itemId));
+  deliverFile(res,'text/html',item);
+}
+
+const deliverFile = function(res,contentType,file){
+  res.setHeader('Content-Type',contentType);  
+  res.write(file||'');
+  res.end();
 }
 
 module.exports = lib;

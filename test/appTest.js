@@ -58,7 +58,7 @@ describe('app',()=>{
   describe('GET /todoList',()=>{
     it('gives the all existing todo lists',done=>{
       let user = {userName:"pallabi"};
-      let header = {cookie:"sessionid=12345"};
+      let header = {cookie:sessionid};
       request(app,{
         method:'GET',url:'/todoList',headers:header,user:user},res=>{
         th.status_is_ok(res);
@@ -69,8 +69,8 @@ describe('app',()=>{
   })
   describe('GET /createToDo',()=>{
     it('should redirect to login page',done=>{
+      let header = {cookie:sessionid}
       let user = {userName:"pallabi"};
-      let header = {cookie:"sessionid=12345"};
       request(app,{
         method:'GET',url:'/createToDo',headers:header,user:user},res=>{
           th.status_is_ok(res);
@@ -141,6 +141,21 @@ describe('app',()=>{
       request(app,options,res=>{
         th.status_is_ok(res);
         th.body_contains(res,'testing on mocha test')
+        done();
+      })
+    })
+  })
+  describe('POST /addNewItem',function(){
+    it('should add a new item in user todo',function(done){
+      let options ={
+        url:'/addNewItem',
+        method:'POST',
+        body:'itemObjective=testing on nyc',
+        headers:{cookie:`todoId=4; sessionid=${sessionid}`}
+      };
+      request(app,options,res=>{
+        th.status_is_ok(res);
+        th.body_contains(res,'testing on nyc')
         done();
       })
     })
