@@ -9,7 +9,7 @@ const LoginHandler = require('./handler/loginHandler.js');
 const GetLoginHandler = require('./handler/getLoginHandler.js');
 const PostLoginHandler = require('./handler/postLoginHandler.js');
 const UserRegistry = require('./src/usersRegistry.js');
-let urlList = ['/', '/home.html', '/logout', '/viewToDo', '/todoList', '/aTodo', '/createToDo', '/delete', '/edit','/singletodo'];
+let urlList = ['/', '/home.html', '/logout', '/viewTodo', '/todoList', '/todo', '/createToDo', '/delete', '/edit','/singletodo'];
 let fs;
 let userRegistry; 
 

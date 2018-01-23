@@ -7,16 +7,14 @@ const getToDos = function (user) {
  return todoTitle;
 }
 
+const displayTodoList=function(userTodo){
+  let toDo = document.getElementById('todolist');
+  toDo.innerHTML = getToDos(userTodo);
+}
 const toDos = function () {
-  function requestListener(){
-    let userTodos = JSON.parse(this.responseText);
-    let toDo = document.getElementById('todolist');
-    toDo.innerHTML = getToDos(userTodos);
-  }
-  var oReq = new XMLHttpRequest();
-  oReq.addEventListener('load',requestListener);
-  oReq.open('get','/todoList');
-  oReq.send();
+  sendAjaxRequest('GET','/todoList',function(){
+    displayTodoList(JSON.parse(this.responseText))
+  })
 }
 
 window.onload = toDos;

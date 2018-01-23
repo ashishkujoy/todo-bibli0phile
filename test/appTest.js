@@ -88,7 +88,7 @@ describe('app',()=>{
       options.headers={cookie:`sessionid=${sessionid}`}
       options.body='title=testing&description=foo&item=["1","2"]',
       request(app,options,res=>{
-        th.should_be_redirected_to(res,'/viewToDo.html');
+        th.should_be_redirected_to(res,'/viewTodo.html');
         done();
       })
     })
@@ -96,7 +96,7 @@ describe('app',()=>{
       options.headers={cookie:`sessionid=${sessionid}`}
       options.body='title=testing&description=foo&item=""',
       request(app,options,res=>{
-        th.should_be_redirected_to(res,'/viewToDo.html');
+        th.should_be_redirected_to(res,'/viewTodo.html');
         done();
       })
     })
@@ -134,7 +134,7 @@ describe('app',()=>{
       let header = {cookie:`sessionid=${sessionid}`};
       request(app,{
         method:'GET',url:'/delete',headers:header,user:user},res=>{
-          th.should_be_redirected_to(res,'/viewToDo.html');
+          th.should_be_redirected_to(res,'/viewTodo.html');
         done();
       })
     })

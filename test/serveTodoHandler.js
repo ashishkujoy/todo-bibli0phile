@@ -26,7 +26,7 @@ describe('serverTodoHandler',function(){
       let req = {url:'/todoId-23'};
       serverTodoHandler.execute(req,res);
       assert.equal(res.statusCode,302)
-      assert.equal(res.location,'/aTodo.html');
+      assert.equal(res.location,'/todo.html');
       assert.ok(res.finished);
     })
     it('should not redirect to aTodo.html and should not end response',function(){

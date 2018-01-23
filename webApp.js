@@ -23,6 +23,12 @@ let redirect = function(path){
   this.setHeader('location',path);
   this.end();
 };
+
+const send = function(file,contentType){
+  this.setHeader('Content-Type',contentType);  
+  this.write(file||'');
+  this.end();
+}
 let invoke = function(req,res){
   let handler = this._handlers[req.method][req.url];
   if(!handler){
@@ -54,6 +60,7 @@ const postUse = function(handler){
 
 const main = function(req,res){
   res.redirect = redirect.bind(res);
+  res.send = send.bind(res);
   req.urlIsOneOf = urlIsOneOf.bind(req);
   req.cookies = parseCookies(req.headers.cookie||'');
   let content="";

@@ -53,7 +53,7 @@ lib.createATodo = function(userRegistry,req,res) {
   }
   if(!user) userRegistry.addNewUser(newUser);
   userRegistry.write();
-  res.redirect('/viewToDo.html');
+  res.redirect('/viewTodo.html');
 }
 lib.getAllTodos = function(userRegistry,req,res) {
   let user = userRegistry.getAUser(req.user.userName);
@@ -67,25 +67,25 @@ lib.getATodo = function(userRegistry,req,res) {
   let todo = user.getSingleTodo(req.cookies.todoId);
   let todoContent = {};
   let options = {
-    text:"Title:"+todo.getTitle(),
+    text:"Title:  "+todo.getTitle(),
     id:'title',
     buttonId:'',
     onClickFunc:'editTodoTitle',
     buttonName:'edit'
   }
   todoContent.title = toHtmlParagraph(options);
-  options.text = "Description:"+todo.getDescription();
+  options.text = "Description:  "+todo.getDescription();
   options.id = 'description';
   options.onClickFunc = 'editTodoDescription';
   todoContent.description = toHtmlParagraph(options);
   todoContent.items = todo.mapItems(toHtmlItem).join('');
-  deliverFile(res,'application/json',JSON.stringify(todoContent));
+  res.send(JSON.stringify(todoContent),'application/json');
 }
 lib.deleteTodo = function(userRegistry,req,res) {
   let user = userRegistry.getAUser(req.user.userName);
   user.deleteTodo(req.cookies.todoId);
   userRegistry.write()
-  res.redirect('/viewToDo.html');
+  res.redirect('/viewTodo.html');
 }
 lib.changeItemStatus = function(userRegistry,req,res){
   let user = userRegistry.getAUser(req.user.userName);  
@@ -100,7 +100,7 @@ lib.deleteItem = function(userRegistry,req,res){
   let todo = user.getSingleTodo(req.cookies.todoId);
   todo.removeItem(req.body.itemId);
   userRegistry.write();
-  deliverFile(res,'application/json',JSON.stringify({"itemId":req.body.itemId}))
+  res.send(JSON.stringify({"itemId":req.body.itemId}),'application/json')
 }
 lib.editItem = function(userRegistry,req,res) {
   let user = userRegistry.getAUser(req.user.userName);      
@@ -111,40 +111,40 @@ lib.editItem = function(userRegistry,req,res) {
   let response = {};
   response.newItem = toHtmlItem(editedItem)
   response.itemId = req.body.itemId;
-  deliverFile(res,'application/json',JSON.stringify(response));
+  res.send(JSON.stringify(response),'application/json');
 }
 lib.addNewItem = function(userRegistry,req,res){
   let user = userRegistry.getAUser(req.user.userName);      
   let todo = user.getSingleTodo(req.cookies.todoId);
   let itemId=todo.addItem(req.body.itemObjective);
   let item = toHtmlItem(todo.getItem(itemId));
-  deliverFile(res,'text/html',item);
+  res.send(item,'text/html');
 }
 lib.editTodoTitle = function(userRegistry,req,res){
   let user = userRegistry.getAUser(req.user.userName);
   let todoTitle = user.editTodoTitle(req.cookies.todoId,req.body.newTitle);
   let options = {
-    text:`Title:${todoTitle}`,
+    text:`Title:  ${todoTitle}`,
     id:'title',
     buttonId:'',
     onClickFunc:'editTodoTitle',
     buttonName:'edit'
   }
   let titleHTMLformat = toHtmlParagraph(options);
-  deliverFile(res,'text/html',titleHTMLformat);
+  res.send(titleHTMLformat,'text/html');
 }
 lib.editTodoDescription=function(userRegistry,req,res){
   let user = userRegistry.getAUser(req.user.userName);
   let todoDescription = user.editTodoDescription(req.cookies.todoId,req.body.newDescription);
   let options = {
-    text:`Description:${todoDescription}`,
+    text:`Description:  ${todoDescription}`,
     id:'description',
     buttonId:'',
     onClickFunc:'editTodoDescription',
     buttonName:'edit'
   }
   let descriptionHTMLformat = toHtmlParagraph(options);
-  deliverFile(res,'text/html',descriptionHTMLformat);
+  res.send(descriptionHTMLformat,'text/html');
 }
 
 

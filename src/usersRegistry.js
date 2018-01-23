@@ -39,7 +39,7 @@ class UserRegistry {
   }
   write(){
     let contentToWrite = JSON.stringify(this.users,null,2);
-    this.fs.writeFile('./data/todoList.json',contentToWrite,()=>{});
+    this.fs.writeFile(this.storagePath,contentToWrite,()=>{});
   }
   addNewUser(newUser){
     this.users.unshift(newUser);

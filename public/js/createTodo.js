@@ -8,3 +8,13 @@ let getTextBox = function(boxSpaceId) {
   boxSpace.appendChild(box);
   boxSpace.appendChild(newLine);
 };
+
+
+const addEventListener = function(){
+  let addButton = document.querySelector('#addButton');
+  addButton.onclick = function(){
+    getTextBox('addItem');
+  }
+  
+};
+window.onload = addEventListener;

@@ -19,13 +19,6 @@ const getTodoView = function () {
   });
 }
 
-const sendAjaxRequest = function(method,url,callBack,reqBody){
-  var ajax = new XMLHttpRequest();
-  ajax.onload=callBack;
-  ajax.open(method,url);
-  ajax.send(reqBody||'');
-}
-
 const createInputElement = function(type,value,id){
   let input = document.createElement('input');
   input.type = type;
@@ -135,7 +128,7 @@ const saveEditedTitle =function(){
 const editTodoTitle = function(){
   let titleDiv = document.querySelector('#title');
   let title = getInnerText('title');
-  title = title.replace('Title:','').replace(' edit','');
+  title = title.replace('Title: ','').replace(' edit','');
   let options = {
     blockId:'editTitleBlock',
     textBoxValue:title,
@@ -168,7 +161,7 @@ const saveEditedDescription = function(){
 const editTodoDescription = function(){
   let descriptionDiv = document.querySelector('#description');
   let description = getInnerText('description');
-  description = description.replace('Description:','').replace(' edit','');
+  description = description.replace('Description: ','').replace(' edit','');
   let options = {
     blockId:'editDescriptionBlock',
     textBoxValue:description,
@@ -187,4 +180,11 @@ const createEditBlock = function(options){
   return editBlock;
 }
 
-window.onload = getTodoView;
+const loadPage = function(){
+  //have to change function name.
+  let addItem = document.querySelector('#addItemButton')
+  addItem.onclick=showTextBoxForNewItems;
+  getTodoView();
+};
+
+window.onload = loadPage;

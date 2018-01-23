@@ -3,18 +3,20 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/commonScripts.js" charset="utf-8"></script>
     <script src="/js/getTodo.js" charset="utf-8"></script>
-    <script src="/js/getTextBox.js" charset="utf-8"></script>
-    <title>a ToDo</title>
+    <title>Todo</title>
   </head>
   <body>
-    <h2><a href="/home.html">Home</a>
-      <a href="/delete">delete</a>
+    <h2><a href="/home.html">Home</a><br>
       <a href="/logout" id="logout">Logout</a>
     </h2>
+    <h4>
+      <a href="/delete">Delete Todo</a>
+    </h4>
     <div id="title"></div>
     <div id="description"></div>
     <div id="items"></div>
-    <button onclick='showTextBoxForNewItems()' id='addItemButton'>Add Item</button>
+    <button id='addItemButton'>Add Item</button>
   </body>
 </html>

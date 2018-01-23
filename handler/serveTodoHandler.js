@@ -13,7 +13,7 @@ class ServeTodoHandler extends DefaultHandler{
   execute(req,res){
     if(this.getAction(req.url)=='/todoId'){
       res.setHeader('Set-Cookie',`todoId=${this.getID(req.url)}`)
-      res.redirect('/aTodo.html');
+      res.redirect('/todo.html');
     }
   }
 }
