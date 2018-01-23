@@ -24,6 +24,7 @@ const createInputElement = function(type,value,id){
   input.type = type;
   input.value = value||'';
   input.id = id||'';
+  input.className = 'input';
   return input;
 }
 
@@ -74,7 +75,6 @@ const deleteItem = function(){
   },reqBody)
 }
 
-
 const changeStatus = function(){
   let itemId = event.target.id;
   let reqBody = `itemId=${itemId}`;
@@ -91,7 +91,6 @@ const showNewItem = function(text){
   saveButton.replaceWith(addItemButton);
 }
 
-let foo;
 const addNewItem = function(){
   let itemObjective = document.getElementById("newItem").value;
   let reqBody = `itemObjective=${itemObjective}`;
@@ -116,7 +115,6 @@ const showEditedDescription = function(text){
   let newDescription = createElement('h4',text);
   editDescriptionBlock.replaceWith(newDescription)
 }
-
 
 const saveEditedTitle =function(){
   let newTitle = document.getElementById('newTitle').value;
@@ -148,7 +146,6 @@ const showTextBoxForNewItems = function(){
   let addItem = document.getElementById('addItemButton');
   addItem.replaceWith(saveButton);
 }
-
 
 const saveEditedDescription = function(){
   let newDescription = document.getElementById('newDescription').value;

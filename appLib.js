@@ -2,8 +2,8 @@ const User = require('./src/user.js');
 const Todo = require('./src/todo.js');
 
 
-const toHtmlParagraph = function(options){
-  return `<h1 id="${options.id}">${options.text} ${getButton(options.buttonId,options.onClickFunc,options.buttonName)}</h1>`
+const toHtmlParagraph = function(paraId,innerText,buttonId,onClickFunc,buttonName){
+  return `<h1 id="${paraId}">${innerText} ${getButton(buttonId,onClickFunc,buttonName)}</h1>`
 }
 
 const getButton = function(id,onclickFunction,buttonName){
@@ -22,7 +22,6 @@ const deliverFile = function(res,contentType,file){
   res.write(file||'');
   res.end();
 }
-
 
 lib = {};
 
@@ -66,18 +65,10 @@ lib.getATodo = function(userRegistry,req,res) {
   let user = userRegistry.getAUser(req.user.userName);
   let todo = user.getSingleTodo(req.cookies.todoId);
   let todoContent = {};
-  let options = {
-    text:"Title:  "+todo.getTitle(),
-    id:'title',
-    buttonId:'',
-    onClickFunc:'editTodoTitle',
-    buttonName:'edit'
-  }
-  todoContent.title = toHtmlParagraph(options);
-  options.text = "Description:  "+todo.getDescription();
-  options.id = 'description';
-  options.onClickFunc = 'editTodoDescription';
-  todoContent.description = toHtmlParagraph(options);
+  let text=`Title:  ${todo.getTitle()}`;
+  todoContent.title = toHtmlParagraph('title',text,'','editTodoTitle','edit');
+  text = `Description:  ${todo.getDescription()}`;
+  todoContent.description = toHtmlParagraph('description',text,'','editTodoDescription','edit');
   todoContent.items = todo.mapItems(toHtmlItem).join('');
   res.send(JSON.stringify(todoContent),'application/json');
 }
@@ -123,27 +114,15 @@ lib.addNewItem = function(userRegistry,req,res){
 lib.editTodoTitle = function(userRegistry,req,res){
   let user = userRegistry.getAUser(req.user.userName);
   let todoTitle = user.editTodoTitle(req.cookies.todoId,req.body.newTitle);
-  let options = {
-    text:`Title:  ${todoTitle}`,
-    id:'title',
-    buttonId:'',
-    onClickFunc:'editTodoTitle',
-    buttonName:'edit'
-  }
-  let titleHTMLformat = toHtmlParagraph(options);
+  let text=`Title:  ${todoTitle}`;
+  let titleHTMLformat = toHtmlParagraph('title',text,'','editTodoTitle','edit');
   res.send(titleHTMLformat,'text/html');
 }
 lib.editTodoDescription=function(userRegistry,req,res){
   let user = userRegistry.getAUser(req.user.userName);
   let todoDescription = user.editTodoDescription(req.cookies.todoId,req.body.newDescription);
-  let options = {
-    text:`Description:  ${todoDescription}`,
-    id:'description',
-    buttonId:'',
-    onClickFunc:'editTodoDescription',
-    buttonName:'edit'
-  }
-  let descriptionHTMLformat = toHtmlParagraph(options);
+  let text=`Description:  ${todoDescription}`;
+  let descriptionHTMLformat = toHtmlParagraph('description',text,'','editTodoDescription','edit');
   res.send(descriptionHTMLformat,'text/html');
 }
 
