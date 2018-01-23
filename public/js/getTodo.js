@@ -1,3 +1,4 @@
+/* eslint-disable */
 const updateInnerHTML = (selector,html)=>{
   document.querySelector(selector).innerHTML = html;
 }
@@ -178,7 +179,7 @@ const createEditBlock = function(options){
 }
 
 const loadPage = function(){
-  //have to change function name.
+  // Have to change function name.
   let addItem = document.querySelector('#addItemButton')
   addItem.onclick=showTextBoxForNewItems;
   getTodoView();

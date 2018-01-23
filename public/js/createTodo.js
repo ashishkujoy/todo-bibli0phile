@@ -1,3 +1,4 @@
+/* eslint-disable */
 let getTextBox = function(boxSpaceId) {
   let boxSpace = document.getElementById(boxSpaceId);
   let box = document.createElement('textarea');

@@ -4,3 +4,4 @@ node_modules/
 data/todoList.json
 .nyc_output
 coverage/
+.eslintrc.json

@@ -5,11 +5,13 @@ class GetLoginHandler extends DefaultHandler{
     super();
     this.loginPagePath = loginPagePath;
   }
+
   execute(req,res){
     let file = fs.readFileSync(this.loginPagePath).toString();
     res.write(file.replace('Bad_login',req.cookies.message || ""));
     res.end();
   }
+  
 }
 
 module.exports = GetLoginHandler;

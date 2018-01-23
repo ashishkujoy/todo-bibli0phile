@@ -6,15 +6,19 @@ class Response {
     this.finished = false;
     this.location = '';
   }
+
   end(){
     this.finished = true;
   }
+
   write(text){
     this.text = text;
   }
+
   setHeader(key,value){
     this.headers[key]=value;
   }
+
   redirect(location){
     this.statusCode = 302;
     this.location = location;

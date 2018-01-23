@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "nyc mocha",
-    "start": "node server.js"
+    "start": "node server.js",
+    "eslint":"eslint ."
   },
   "repository": {
     "type": "git",

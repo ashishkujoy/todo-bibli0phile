@@ -16,9 +16,11 @@ class StaticFileHandler extends DefaultHandler{
     super();
     this.root = root;
   }
+
   getFilePath(url){
     return `./${this.root}${url}`;
   }
+
   execute(req,res){
     let filePath = this.getFilePath(req.url)
     if(fs.existsSync(filePath)){
@@ -28,5 +30,6 @@ class StaticFileHandler extends DefaultHandler{
       res.end();
     }
   }
+  
 }
 module.exports = StaticFileHandler;

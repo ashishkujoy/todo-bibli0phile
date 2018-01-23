@@ -19,7 +19,7 @@ describe('user',()=>{
       let user = new User('pallabi');
       assert.deepEqual({},user.getTodo());
       user.addTodo('home','washing clothes');
-      let expected = { '0': new Todo(0,'home','washing clothes') };
+      let expected = {'0': new Todo(0,'home','washing clothes')};
       assert.deepEqual(expected,user.getTodo());
     })
   })
@@ -37,7 +37,7 @@ describe('user',()=>{
       let user = new User('pallabi');
       user.addTodo('home','washing clothes');
       user.deleteTodo('0');
-      assert.deepEqual(user,{ userName: 'pallabi',allTodo: {},todoNo: 1 })
+      assert.deepEqual(user,{userName: 'pallabi',allTodo: {},todoNo: 1})
     })
   })
   describe('#editTodoTitle',()=>{

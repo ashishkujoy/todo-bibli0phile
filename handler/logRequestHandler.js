@@ -7,7 +7,8 @@ class LogRequestHandler extends DefaultHandler {
   constructor() {
     super();
   }
-  execute(req,res){
+
+  execute(req){
     let text = ['------------------------------',
       `${timeStamp()}`,
       `${req.method} ${req.url}`,
@@ -17,5 +18,6 @@ class LogRequestHandler extends DefaultHandler {
     fs.appendFile('request.log',text,()=>{});
     console.log(`${req.method} ${req.url}`);
   }
+
 }
 module.exports = LogRequestHandler;

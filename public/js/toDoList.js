@@ -1,3 +1,4 @@
+/* eslint-disable */
 const getToDos = function (user) {
  let toDos = Object.keys(user.allTodo);
  let todoTitle ='';

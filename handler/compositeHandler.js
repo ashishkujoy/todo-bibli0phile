@@ -5,9 +5,11 @@ class CompositeHandler extends DefaultHandler {
     super();
     this.allHandlers =[];
   }
+
   addHandler(handler){
     this.allHandlers.push(handler);
   }
+
   execute(req,res){
     let index = 0;
     while(!res.finished && index<this.allHandlers.length){
@@ -15,5 +17,6 @@ class CompositeHandler extends DefaultHandler {
       index++;
     }
   }
+  
 }
 module.exports = CompositeHandler;

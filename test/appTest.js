@@ -47,8 +47,7 @@ describe('app',()=>{
     it('gives the home page',done=>{
       let user = {userName:"pallabi"};
       let header = {cookie:"sessionid=12345"};
-      request(app,{
-        method:'GET',url:'/home.html',headers:header,user:user},res=>{
+      request(app,{method:'GET',url:'/home.html',headers:header,user},res=>{
         th.status_is_ok(res);
         th.body_contains(res,'TO-DO');
         done();
@@ -59,8 +58,7 @@ describe('app',()=>{
     it('gives the all existing todo lists',done=>{
       let user = {userName:"pallabi"};
       let header = {cookie:sessionid};
-      request(app,{
-        method:'GET',url:'/todoList',headers:header,user:user},res=>{
+      request(app,{method:'GET',url:'/todoList',headers:header,user},res=>{
         th.status_is_ok(res);
         th.body_contains(res,'pallabi');
         done();
@@ -71,8 +69,7 @@ describe('app',()=>{
     it('should redirect to login page',done=>{
       let header = {cookie:sessionid}
       let user = {userName:"pallabi"};
-      request(app,{
-        method:'GET',url:'/createToDo',headers:header,user:user},res=>{
+      request(app,{method:'GET',url:'/createToDo',headers:header,user},res=>{
           th.status_is_ok(res);
           th.body_contains(res,'Create A ToDo')
         done();
@@ -121,8 +118,7 @@ describe('app',()=>{
     it('should redirect to login page',done=>{
       let user = {userName:"pallabi"};
       let header = {cookie:"sessionid=12345"};
-      request(app,{
-        method:'GET',url:'/logout',headers:header,user:user},res=>{
+      request(app,{method:'GET',url:'/logout',headers:header,user},res=>{
           th.should_be_redirected_to(res,'/login');
         done();
       })
@@ -132,8 +128,7 @@ describe('app',()=>{
     it('should delete a todo',done=>{
       let user = {userName:"pallabi"};
       let header = {cookie:`sessionid=${sessionid}`};
-      request(app,{
-        method:'GET',url:'/delete',headers:header,user:user},res=>{
+      request(app,{method:'GET',url:'/delete',headers:header,user},res=>{
           th.should_be_redirected_to(res,'/viewTodo.html');
         done();
       })

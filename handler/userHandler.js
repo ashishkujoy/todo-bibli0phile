@@ -1,15 +1,19 @@
-let registered_users = [{userName:'pallabi',session:[]},{userName:'sayima',session:[]}];
+let registeredUsers = [{userName:'pallabi',session:[]},{userName:'sayima',session:[]}];
 class UserHandler {
   constructor() {
-    this.registered_users = registered_users;
+    this.registeredUsers = registeredUsers;
   }
+
   getRegisteredUser(){
-    return this.registered_users;
+    return this.registeredUsers;
   }
+
   execute(){}
+
   getRequestHandler(){
     return this.execute.bind(this);
   }
+
 }
 
 module.exports = UserHandler;
