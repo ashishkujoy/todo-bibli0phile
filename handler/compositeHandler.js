@@ -10,10 +10,10 @@ class CompositeHandler extends DefaultHandler {
     this.allHandlers.push(handler);
   }
 
-  execute(req,res){
+  execute(req,res,next){
     let index = 0;
     while(!res.finished && index<this.allHandlers.length){
-      this.allHandlers[index].execute(req,res);
+      this.allHandlers[index].execute(req,res,next);
       index++;
     }
   }

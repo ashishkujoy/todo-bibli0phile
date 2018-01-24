@@ -1,5 +1,4 @@
 const User = require('./src/user.js');
-const Todo = require('./src/todo.js');
 
 
 const toHtmlParagraph = function(paraId,innerText,buttonId,onClickFunc,buttonName){
@@ -17,13 +16,8 @@ const toHtmlItem = function(item){
   <span>${item.getItem()}</span>${getButton(item.getId(),'editItem','Edit')}${getButton(item.getId(),'deleteItem','Delete')}</h3></hr>`
 }
 
-const deliverFile = function(res,contentType,file){
-  res.setHeader('Content-Type',contentType);  
-  res.write(file||'');
-  res.end();
-}
 
-lib = {};
+let lib = {};
 
 lib.redirectLoggedInUserToHome = (req,res)=>{
   if(req.urlIsOneOf(['/','/login']) && req.user) res.redirect('/home.html');
@@ -70,7 +64,7 @@ lib.getATodo = function(userRegistry,req,res) {
   text = `Description:  ${todo.getDescription()}`;
   todoContent.description = toHtmlParagraph('description',text,'','editTodoDescription','edit');
   todoContent.items = todo.mapItems(toHtmlItem).join('');
-  res.send(JSON.stringify(todoContent),'application/json');
+  res.json(todoContent);
 }
 lib.deleteTodo = function(userRegistry,req,res) {
   let user = userRegistry.getAUser(req.user.userName);
@@ -91,7 +85,8 @@ lib.deleteItem = function(userRegistry,req,res){
   let todo = user.getSingleTodo(req.cookies.todoId);
   todo.removeItem(req.body.itemId);
   userRegistry.write();
-  res.send(JSON.stringify({"itemId":req.body.itemId}),'application/json')
+  // res.send(JSON.stringify({"itemId":req.body.itemId}),'application/json')
+  res.json({"itemId":req.body.itemId})
 }
 lib.editItem = function(userRegistry,req,res) {
   let user = userRegistry.getAUser(req.user.userName);      
@@ -102,28 +97,38 @@ lib.editItem = function(userRegistry,req,res) {
   let response = {};
   response.newItem = toHtmlItem(editedItem)
   response.itemId = req.body.itemId;
-  res.send(JSON.stringify(response),'application/json');
+  res.set('Content-Type','application/json')  
+  //res.send(JSON.stringify(response),'application/json');
+  res.send(response);
 }
 lib.addNewItem = function(userRegistry,req,res){
   let user = userRegistry.getAUser(req.user.userName);      
   let todo = user.getSingleTodo(req.cookies.todoId);
   let itemId=todo.addItem(req.body.itemObjective);
   let item = toHtmlItem(todo.getItem(itemId));
-  res.send(item,'text/html');
+  res.set('Content-Type','text/html')  
+  res.send(item);
+  userRegistry.write();  
 }
 lib.editTodoTitle = function(userRegistry,req,res){
   let user = userRegistry.getAUser(req.user.userName);
   let todoTitle = user.editTodoTitle(req.cookies.todoId,req.body.newTitle);
+  debugger;
   let text=`Title:  ${todoTitle}`;
   let titleHTMLformat = toHtmlParagraph('title',text,'','editTodoTitle','edit');
-  res.send(titleHTMLformat,'text/html');
+  res.set('Content-Type','text/html')
+  res.send(titleHTMLformat);
+  userRegistry.write();
 }
 lib.editTodoDescription=function(userRegistry,req,res){
   let user = userRegistry.getAUser(req.user.userName);
   let todoDescription = user.editTodoDescription(req.cookies.todoId,req.body.newDescription);
   let text=`Description:  ${todoDescription}`;
   let descriptionHTMLformat = toHtmlParagraph('description',text,'','editTodoDescription','edit');
-  res.send(descriptionHTMLformat,'text/html');
+  res.set('Content-Type','text/html')  
+  res.send(descriptionHTMLformat);
+  userRegistry.write();
+  
 }
 
 

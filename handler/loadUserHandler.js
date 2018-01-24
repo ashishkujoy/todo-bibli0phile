@@ -15,10 +15,11 @@ class LoadUserHandler extends UserHandler{
     });
   }
 
-  execute(req){
+  execute(req,res,next){
     if(this.getSessionID(req) && this.getUser(req)){
       req.user=this.getUser(req);
     }
+    next()
   }
 
 }

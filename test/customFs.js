@@ -124,7 +124,7 @@ fs.readFileSync = function(filePath,endcoding){
   if(filePath=='./data/todoList.json'){
     return JSON.stringify(allUsers);
   }
-  contents ={
+  let contents ={
     './public/login.html':loginPage,
     '.public/home.html':homepage,
     './public/createToDo.html':createToDoPage,
@@ -134,6 +134,9 @@ fs.readFileSync = function(filePath,endcoding){
 }
 
 fs.writeFile = function(filePath,text){
+  return this.text=text;
+}
+fs.writeFileSync = function(filePath,text){
   return this.text=text;
 }
 

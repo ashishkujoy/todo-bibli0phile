@@ -42,7 +42,7 @@ class UserRegistry {
 
   write(){
     let contentToWrite = JSON.stringify(this.users,null,2);
-    this.fs.writeFile(this.storagePath,contentToWrite,()=>{});
+    this.fs.writeFileSync(this.storagePath,contentToWrite,()=>{});
   }
 
   addNewUser(newUser){

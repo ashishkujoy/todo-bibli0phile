@@ -10,7 +10,6 @@ class PostLoginHandler extends UserHandler{
   }
 
   execute(req,res){
-    
     if(!this.getUser(req)) {
       res.setHeader('Set-Cookie',"message=Login Failed; Max-Age=5");
       res.redirect('/login');

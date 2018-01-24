@@ -8,7 +8,7 @@ class LogRequestHandler extends DefaultHandler {
     super();
   }
 
-  execute(req){
+  execute(req,res,next){
     let text = ['------------------------------',
       `${timeStamp()}`,
       `${req.method} ${req.url}`,
@@ -17,6 +17,7 @@ class LogRequestHandler extends DefaultHandler {
       `BODY=> ${toS(req.body)}`,''].join('\n');
     fs.appendFile('request.log',text,()=>{});
     console.log(`${req.method} ${req.url}`);
+    next()
   }
 
 }

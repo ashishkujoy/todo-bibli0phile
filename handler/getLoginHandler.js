@@ -7,9 +7,9 @@ class GetLoginHandler extends DefaultHandler{
   }
 
   execute(req,res){
-    let file = fs.readFileSync(this.loginPagePath).toString();
-    res.write(file.replace('Bad_login',req.cookies.message || ""));
-    res.end();
+    let file = fs.readFileSync(this.loginPagePath,'utf8');
+    res.set('Content-Type','text/html')
+    res.send(file.replace('Bad_login',req.cookies.message || ""));
   }
   
 }

@@ -1,6 +1,7 @@
-const WebApp = require('./webapp');
+const express = require('express');
+const cookieParser = require('cookie-parser')
+const app = express();
 const lib = require('./appLib.js');
-const StaticFileHandler = require('./handler/staticFileHandler.js');
 const ServeTodoHandler = require('./handler/serveTodoHandler.js');
 const CompositeHandler = require('./handler/compositeHandler.js');
 const LogRequestHandler = require('./handler/logRequestHandler.js');
@@ -14,7 +15,7 @@ let fs;
 let userRegistry; 
 
 
-const staticHandler = new StaticFileHandler('public');
+
 const serveTodoHandler = new ServeTodoHandler();
 const compositeHandler = new CompositeHandler();
 const logRequestHandler = new LogRequestHandler();
@@ -26,14 +27,23 @@ const postLoginHandler = new PostLoginHandler();
 compositeHandler.addHandler(logRequestHandler);
 compositeHandler.addHandler(loadUserHandler);
 compositeHandler.addHandler(loginHandler);
-compositeHandler.addHandler(staticHandler);
+
 compositeHandler.addHandler(serveTodoHandler);
 
-const app = WebApp.create();
+const staticHandler = express.static('public')
 
+const urlIsOneOf = function(allUrl){
+  return allUrl.includes(this.url);
+}
+app.use(express.urlencoded({extended:false,encoding:"utf8"}))
+app.use(function(req,res,next){
+  req.urlIsOneOf = urlIsOneOf.bind(req);
+  next();
+})
+app.use(cookieParser());
 app.use(compositeHandler.getRequestHandler());
+app.use(staticHandler)
 app.use(lib.redirectLoggedInUserToHome);
-
 app.get('/todoList',(req,res)=>{
   return lib.getAllTodos(userRegistry,req,res)
 });
@@ -70,10 +80,10 @@ app.post('/editTodoTitle',(req,res)=>{
 app.post('/editTodoDescription',(req,res)=>{
   lib.editTodoDescription(userRegistry,req,res);
 })
-app.postUse(compositeHandler.getRequestHandler());
 app.initialize = function(customFs){
   fs = customFs;
   userRegistry = new UserRegistry(customFs,'./data/todoList.json');
   userRegistry.load();
 }
 module.exports = app;
+
