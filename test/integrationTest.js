@@ -129,12 +129,11 @@ describe('app',function() {
        .end(done);
     })
   })
-  describe('POST /deleteItem',function(){
+  describe('POST /todo/:todoId/item/:itemId/delete',function(){
     it('should delete a specified todoItem from user todo',function(done){
       request(app)
-        .post('/deleteItem')
-        .set('Cookie','sessionid=12345; todoId=4')
-        .send('itemId=0')
+        .post('/todo/4/item/0/delete')
+        .set('Cookie','sessionid=12345')
         .expect(200)
         .expect(/itemId/)
         .end(done);
@@ -159,54 +158,53 @@ describe('app',function() {
         .end(done);
     })
   })
-  describe('POST /changeItemStatus',()=>{
+  describe('POST /todo/:todoId/item/:itemId/changeStatus',()=>{
     it('it should change item status',done=>{
       request(app)
-        .post('/changeItemStatus')
-        .set('Cookie','todoId=4; sessionid=12345')
-        .send('itemId=0')
+        .post('/todo/4/item/0/changeStatus')
+        .set('Cookie','sessionid=12345')
         .expect(200)
         .end(done);
     })
   })
-  describe('POST /editItem',function(){
+  describe('POST /todo/:todoId/item/:itemId/edit',function(){
     it('should edit the description of specified todo item',function(done){
       request(app)
-        .post('/editItem')
+        .post('/todo/4/item/0/edit')
         .set('Cookie','todoId=4; sessionid=12345')
-        .send('itemId=0&newObjective=testing on mocha test')
+        .send('newObjective=testing on mocha test')
         .expect(200)
         .expect(/testing on mocha test/)
         .end(done);
     })
   })
-  describe('POST /addNewItem',function(){
+  describe('POST /todo/:todoId/addNewItem',function(){
     it('should add a new item in user todo',function(done){
       request(app)
-        .post('/addNewItem')
-        .set('Cookie','todoId=4; sessionid=12345')
+        .post('/todo/4/addNewItem')
+        .set('Cookie','sessionid=12345')
         .send('itemObjective=testing on nyc')
         .expect(200)
         .expect(/testing on nyc/)
         .end(done);
     })
   })
-  describe("POST /editTodoTitle",function(){
+  describe("POST /todo/:todoId/editTitle",function(){
     it('should replace todo title with new one',function(done){
       request(app)
-        .post('/editTodoTitle')
-        .set('Cookie','todoId=4; sessionid=12345')
+        .post('/todo/4/editTitle')
+        .set('Cookie','sessionid=12345')
         .send('newTitle=testing title')
         .expect(200)
         .expect(/testing title/)
         .end(done);
     })
   })
-  describe("POST /editTodoDescription",function(){
+  describe("POST /todo/:todoId/editDescription",function(){
     it('should replace todo description with new description',function(done){
       request(app)
-        .post('/editTodoDescription')
-        .set('Cookie','todoId=4; sessionid=12345')
+        .post('/todo/4/editDescription')
+        .set('Cookie','sessionid=12345')
         .send('newDescription=testing Description')
         .expect(200)
         .expect(/testing Description/)

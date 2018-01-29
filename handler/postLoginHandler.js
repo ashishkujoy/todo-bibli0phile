@@ -17,13 +17,10 @@ class PostLoginHandler extends UserHandler{
       res.redirect('/login');
       return;
     }
-    debugger;
-
     let sessionid = req.app.sessionManager.createSession(userName);
     res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
-    // this.getUser(req).session.push(sessionid);
     res.redirect('/home.html');
   }
-  
+
  }
 module.exports = PostLoginHandler;

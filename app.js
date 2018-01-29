@@ -51,12 +51,12 @@ app.route('/createToDo')
   .get(lib.getCreateTodoPage)
   .post(lib.createATodo);
 app.get('/delete',lib.deleteTodo);
-app.post('/changeItemStatus',lib.changeItemStatus);
-app.post('/deleteItem',lib.deleteItem);
-app.post('/editItem',lib.editItem);
-app.post('/addNewItem',lib.addNewItem);
-app.post('/editTodoTitle',lib.editTodoTitle);
-app.post('/editTodoDescription',lib.editTodoDescription);
+app.post('/todo/:todoId/item/:itemId/changeStatus',lib.changeItemStatus);
+app.post('/todo/:todoId/item/:itemId/delete',lib.deleteItem);
+app.post('/todo/:todoId/item/:itemId/edit',lib.editItem);
+app.post('/todo/:todoId/addNewItem',lib.addNewItem);
+app.post('/todo/:todoId/editTitle',lib.editTodoTitle);
+app.post('/todo/:todoId/editDescription',lib.editTodoDescription);
 app.initialize = function(customFs,sessionManager){
   app.sessionManager = sessionManager;
   app.fs= customFs
