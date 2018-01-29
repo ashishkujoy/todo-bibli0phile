@@ -148,4 +148,7 @@ fs.existsSync = function(filePath){
   './public/createToDo.html','./public/viewToDo.html']
   return existingFiles.includes(filePath);
 }
+fs.appendFile = function(filename,text){
+  return this.text+=text;
+}
 module.exports = fs;

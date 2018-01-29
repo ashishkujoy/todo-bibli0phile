@@ -11,9 +11,6 @@ const GetLoginHandler = require('./handler/getLoginHandler.js');
 const PostLoginHandler = require('./handler/postLoginHandler.js');
 const UserRegistry = require('./src/usersRegistry.js');
 let urlList = ['/', '/home.html', '/logout', '/viewTodo', '/todoList', '/todo', '/createToDo', '/delete', '/edit','/singletodo'];
-let fs;
-let userRegistry; 
-
 
 
 const serveTodoHandler = new ServeTodoHandler();
@@ -44,47 +41,25 @@ app.use(cookieParser());
 app.use(compositeHandler.getRequestHandler());
 app.use(staticHandler)
 app.use(lib.redirectLoggedInUserToHome);
-app.get('/todoList',(req,res)=>{
-  return lib.getAllTodos(userRegistry,req,res)
-});
-app.get('/singletodo',(req,res)=>{
-  return lib.getATodo(userRegistry,req,res)
-});
+app.get('/todoList',lib.getAllTodos);
+app.get('/singletodo',lib.getATodo);
 app.get('/login',getLoginHandler.getRequestHandler());
 app.get('/logout',lib.logoutUser);
 app.post('/login',postLoginHandler.getRequestHandler());
-app.get('/createToDo',(req,res)=>{
-  return lib.getCreateTodoPage(fs,req,res)
-});
-app.post('/createToDo',(req,res)=>{
-  return lib.createATodo(userRegistry,req,res)
-});
-app.get('/delete',(req,res)=>{
-  return lib.deleteTodo(userRegistry,req,res)
-});
-app.post('/changeItemStatus',(req,res)=>{
-  return lib.changeItemStatus(userRegistry,req,res)
-});
-app.post('/deleteItem',(req,res)=>{
-  return lib.deleteItem(userRegistry,req,res)
-});
-app.post('/editItem',(req,res)=>{
-  return lib.editItem(userRegistry,req,res)
-});
-app.post('/addNewItem',(req,res)=>{
-  lib.addNewItem(userRegistry,req,res);
-})
-app.post('/editTodoTitle',(req,res)=>{
-  lib.editTodoTitle(userRegistry,req,res);
-})
-app.post('/editTodoDescription',(req,res)=>{
-  lib.editTodoDescription(userRegistry,req,res);
-})
+app.get('/createToDo',lib.getCreateTodoPage);
+app.post('/createToDo',lib.createATodo);
+app.get('/delete',lib.deleteTodo);
+app.post('/changeItemStatus',lib.changeItemStatus);
+app.post('/deleteItem',lib.deleteItem);
+app.post('/editItem',lib.editItem);
+app.post('/addNewItem',lib.addNewItem);
+app.post('/editTodoTitle',lib.editTodoTitle);
+app.post('/editTodoDescription',lib.editTodoDescription);
 app.initialize = function(customFs,sessionManager){
-  fs = customFs;
   app.sessionManager = sessionManager;
-  userRegistry = new UserRegistry(customFs,'./data/todoList.json');
+  app.fs= customFs
+  let userRegistry = new UserRegistry(customFs,'./data/todoList.json');
   userRegistry.load();
+  app.userRegistry = userRegistry;
 }
 module.exports = app;
-

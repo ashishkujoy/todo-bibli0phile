@@ -12,6 +12,7 @@ const displayTodo = function(userTodo){
   updateInnerHTML('#title',userTodo.title);
   updateInnerHTML('#description',userTodo.description);
   updateInnerHTML('#items',userTodo.items);
+  updateInnerHTML('#username',userTodo.username);
 }
 
 const getTodoView = function () {
@@ -109,7 +110,7 @@ const createElement = function(elementTag,innerHTML){
 const showEditedTitle = function(text){
   let editTitleBlock = document.getElementById("editTitleBlock");
   let newTitle = createElement('h4',text)
-  editTitleBlock.replaceWith(newTitle); 
+  editTitleBlock.replaceWith(newTitle);
 }
 const showEditedDescription = function(text){
   let editDescriptionBlock = document.getElementById("editDescriptionBlock");
