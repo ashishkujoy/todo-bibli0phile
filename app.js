@@ -43,11 +43,13 @@ app.use(staticHandler)
 app.use(lib.redirectLoggedInUserToHome);
 app.get('/todoList',lib.getAllTodos);
 app.get('/singletodo',lib.getATodo);
-app.get('/login',getLoginHandler.getRequestHandler());
+app.route('/login')
+  .get(getLoginHandler.getRequestHandler())
+  .post(postLoginHandler.getRequestHandler());
 app.get('/logout',lib.logoutUser);
-app.post('/login',postLoginHandler.getRequestHandler());
-app.get('/createToDo',lib.getCreateTodoPage);
-app.post('/createToDo',lib.createATodo);
+app.route('/createToDo')
+  .get(lib.getCreateTodoPage)
+  .post(lib.createATodo);
 app.get('/delete',lib.deleteTodo);
 app.post('/changeItemStatus',lib.changeItemStatus);
 app.post('/deleteItem',lib.deleteItem);

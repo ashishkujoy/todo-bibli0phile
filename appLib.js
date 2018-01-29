@@ -53,8 +53,6 @@ lib.getAllTodos = function(req,res) {
   res.write(JSON.stringify(user)||"");
   res.end();
 }
-
-
 lib.getATodo = function(req,res) {
   let user = req.app.userRegistry.getAUser(req.userName);
   let todo = user.getSingleTodo(req.cookies.todoId);
@@ -80,7 +78,6 @@ lib.changeItemStatus = function(req,res){
   req.app.userRegistry.write();
   res.end();
 }
-
 lib.deleteItem = function(req,res){
   let user = req.app.userRegistry.getAUser(req.userName);
   let todo = user.getSingleTodo(req.cookies.todoId);
