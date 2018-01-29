@@ -6,7 +6,7 @@ const defaultIDGenerator = function(){
 class SessionManager{
   constructor(idGenerator){
     this.sessions ={};
-    this.idGenerator = idGenerator || defaultIDGenerator();
+    this.idGenerator = idGenerator || defaultIDGenerator;
   }
 
   getSessionID(){

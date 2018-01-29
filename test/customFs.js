@@ -140,6 +140,9 @@ fs.writeFileSync = function(filePath,text){
   return this.text=text;
 }
 
+fs.mkdirSync = function(directory) {
+  return true;
+}
 fs.existsSync = function(filePath){
   let existingFiles = ['./public/login.html','.public/home.html',
   './public/createToDo.html','./public/viewToDo.html']

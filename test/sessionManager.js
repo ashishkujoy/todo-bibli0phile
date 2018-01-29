@@ -4,7 +4,7 @@ let SessionManager = require('../src/sessionManager.js');
 
 const idGenerator=()=>12345;
 let sessionManager;
-describe.only('SessionManager',function() {
+describe('SessionManager',function() {
   beforeEach( function(){
     sessionManager = new SessionManager(idGenerator);
   })

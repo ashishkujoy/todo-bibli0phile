@@ -17,7 +17,7 @@ describe('LoginHandler',function(){
       assert.equal(res.location,'/login');
     })
     it('should not redirect to /login',function(){
-      let req = {url:'/home.html',user:{userName:"abc"}};
+      let req = {url:'/home.html',userName:'badman'};
       loginHandler.execute(req,res);
       assert.isNotOk(res.finished);
       assert.equal(res.statusCode,200);
