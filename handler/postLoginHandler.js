@@ -5,19 +5,23 @@ class PostLoginHandler extends UserHandler{
     super();
   }
 
-  getUser(req){
-    return this.getRegisteredUser().find(u=>u.userName==req.body.userName)
+  getUserName(req){
+    let user= this.getRegisteredUser().find(u=>u.userName==req.body.userName);
+    if(user) return user.userName;
   }
 
   execute(req,res){
-    if(!this.getUser(req)) {
+    let userName = this.getUserName(req);
+    if(!userName) {
       res.setHeader('Set-Cookie',"message=Login Failed; Max-Age=5");
       res.redirect('/login');
       return;
     }
-    let sessionid = new Date().getTime();
+    debugger;
+
+    let sessionid = req.app.sessionManager.createSession(userName);
     res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
-    this.getUser(req).session.push(sessionid);
+    // this.getUser(req).session.push(sessionid);
     res.redirect('/home.html');
   }
   

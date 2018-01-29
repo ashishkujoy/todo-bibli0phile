@@ -1,7 +1,8 @@
 module.exports = {
     "env": {
         "es6": true,
-        "node": true
+        "node": true,
+        "mocha":true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -26,7 +27,6 @@ module.exports = {
         ],
         "callback-return": "error",
         "camelcase": "error",
-        "capitalized-comments": "error",
         "comma-dangle": "error",
         "comma-spacing": "off",
         "comma-style": "error",
@@ -35,7 +35,6 @@ module.exports = {
             "error",
             "never"
         ],
-        "consistent-return": "error",
         "consistent-this": "error",
         "curly": "off",
         "default-case": "error",

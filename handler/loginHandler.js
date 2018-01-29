@@ -11,7 +11,7 @@ class LoginHandler extends DefaultHandler{
   }
 
   execute(req,res){
-    if(this.getValid(req.url) && !(req.user)) {
+    if(this.getValid(req.url) && !(req.userName)) {
       res.redirect('/login');
       res.end();
     }

@@ -80,8 +80,9 @@ app.post('/editTodoTitle',(req,res)=>{
 app.post('/editTodoDescription',(req,res)=>{
   lib.editTodoDescription(userRegistry,req,res);
 })
-app.initialize = function(customFs){
+app.initialize = function(customFs,sessionManager){
   fs = customFs;
+  app.sessionManager = sessionManager;
   userRegistry = new UserRegistry(customFs,'./data/todoList.json');
   userRegistry.load();
 }

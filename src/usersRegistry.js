@@ -30,6 +30,10 @@ class UserRegistry {
   }
 
   load(){
+    if(!this.fs.existsSync(this.storagePath)){
+      this.fs.mkdirSync('data');
+      this.fs.writeFileSync(this.storagePath,JSON.stringify([]));
+    }
     let userData = this.fs.readFileSync(this.storagePath,'utf8');
     let users = giveBehavior(JSON.parse(userData));
     this.users = users || [];

@@ -9,15 +9,11 @@ class LoadUserHandler extends UserHandler{
     return req.cookies.sessionid;
   }
 
-  getUser(req){
-    return this.getRegisteredUser().find(u=>{
-      return u.session.includes(Number(this.getSessionID(req)));
-    });
-  }
-
   execute(req,res,next){
-    if(this.getSessionID(req) && this.getUser(req)){
-      req.user=this.getUser(req);
+    let sessionManager = req.app.sessionManager;
+    let sessionid = this.getSessionID(req);
+    if(sessionManager.isLoggedin(sessionid)){
+      req.userName=sessionManager.getUserName(sessionid);
     }
     next()
   }
