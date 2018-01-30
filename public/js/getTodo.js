@@ -53,7 +53,7 @@ const changeStatus = function(){
 }
 
 const showNewItem = function(text){
-  let newItem = createElement('h3',text);
+  let newItem = createElement('h3','null',text);
   let addItemBlock = document.getElementById('newItem').parentElement;
   let items = document.getElementById('items');
   items.replaceChild(newItem,addItemBlock);
@@ -64,6 +64,7 @@ const showNewItem = function(text){
 
 const addNewItem = function(){
   let itemObjective = document.getElementById("newItem").value;
+  if(itemObjective.trim()=='') return;
   let reqBody = `itemObjective=${itemObjective}`;
   console.log(getTodoId());
   sendAjaxRequest('POST',`${getTodoId()}/addNewItem`,function(){

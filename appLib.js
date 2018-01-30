@@ -32,7 +32,7 @@ lib.logoutUser = function(req,res) {
   res.redirect('/login');
 }
 lib.getCreateTodoPage = function(req,res) {
-  let file = req.app.fs.readFileSync('./public/createToDo.html').toString();
+  let file = req.app.fs.readFileSync('./public/createTodo.html').toString();
   res.write(file.replace('username',`${req.userName}` || ""));
   res.end();
 }
@@ -102,6 +102,7 @@ lib.addNewItem = function(req,res){
   let todo = getTodo(req);
   let itemId=todo.addItem(req.body.itemObjective);
   let item = toHtmlItem(todo.getItem(itemId));
+  debugger;
   res.send(item);
   req.app.userRegistry.write();
 }

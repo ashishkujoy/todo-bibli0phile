@@ -9,7 +9,7 @@ const LoginHandler = require('./handler/loginHandler.js');
 const GetLoginHandler = require('./handler/getLoginHandler.js');
 const PostLoginHandler = require('./handler/postLoginHandler.js');
 const UserRegistry = require('./src/usersRegistry.js');
-let urlList = ['/', '/home.html', '/logout', '/viewTodo', '/todoList', '/todo', '/createToDo', '/delete', '/edit','/singletodo'];
+let urlList = ['/', '/home.html', '/logout',  '/todoList', '/createTodo', '/delete', '/edit','/singletodo'];
 
 
 const compositeHandler = new CompositeHandler();
@@ -52,7 +52,7 @@ app.route('/login')
   .get(getLoginHandler.getRequestHandler())
   .post(postLoginHandler.getRequestHandler());
 app.get('/logout',lib.logoutUser);
-app.route('/createToDo')
+app.route('/createTodo')
   .get(lib.getCreateTodoPage)
   .post(lib.createATodo);
 app.get('/delete',lib.deleteTodo);

@@ -1,7 +1,7 @@
 let LoginHandler = require('../handler/loginHandler.js');
 let assert = require('chai').assert;
 const Response = require('./customResponse.js');
-const allUrl = ['/', '/home.html', '/logout', '/viewToDo', '/todoList', '/aTodo', '/createToDo', '/delete', '/edit','/singletodo']
+const allUrl = ['/', '/home.html', '/logout', '/viewToDo', '/todoList', '/aTodo', '/createTodo', '/delete', '/edit','/singletodo']
 let loginHandler = new LoginHandler(allUrl);
 let res;
 beforeEach(function(){

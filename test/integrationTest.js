@@ -68,20 +68,20 @@ describe('app',function() {
         .end(done);
     })
   })
-  describe('GET /createToDo',()=>{
+  describe('GET /createTodo',()=>{
     it('should redirect to login page',done=>{
       request(app)
-        .get('/createToDo')
+        .get('/createTodo')
         .set('Cookie','sessionid=12345')
         .expect(200)
         .expect(/Create A ToDo/)
         .end(done);
     })
   })
-  describe('POST /createToDo',function(){
+  describe('POST /createTodo',function(){
     it('should add a todo in user todos',function(done){
       request(app)
-        .post('/createToDo')
+        .post('/createTodo')
         .set('Cookie','sessionid=12345')
         .send('title=testing&description=foo&item=["1","2"]')
         .expect(302)
@@ -90,7 +90,7 @@ describe('app',function() {
       })
     it('should add a todo in user todos even when there is no item',function(done){
       request(app)
-        .post('/createToDo')
+        .post('/createTodo')
         .set('Cookie','sessionid=12345')
         .send('title=testing&description=foo&item=')
         .expect(302)
