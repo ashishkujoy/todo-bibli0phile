@@ -98,11 +98,11 @@ describe('app',function() {
         .end(done);
     })
   })
-  describe('GET /singletodo',()=>{
+  describe('GET /todo/:todoId',()=>{
     it('should give a specified todo',function(done){
      request(app)
-       .get('/singletodo')
-       .set('Cookie','sessionid=12345; todoId=4')
+       .get('/todo/4')
+       .set('Cookie','sessionid=12345')
        .expect(200)
        .expect(/vsnbm,/)
        .expect(/edit/)

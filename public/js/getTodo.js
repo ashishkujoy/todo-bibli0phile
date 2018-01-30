@@ -14,19 +14,6 @@ const getInnerText = function(id){
   return element.innerText;
 }
 
-const displayTodo = function(userTodo){
-  updateInnerHTML('#title',userTodo.title);
-  updateInnerHTML('#description',userTodo.description);
-  updateInnerHTML('#items',userTodo.items);
-  updateInnerHTML('#username',userTodo.username);
-}
-
-const getTodoView = function () {
-  return sendAjaxRequest('get','/singletodo',function(){
-    displayTodo(JSON.parse(this.responseText))
-  });
-}
-
 const createInputElement = function(type,value,id){
   let input = document.createElement('input');
   input.type = type;
@@ -55,7 +42,7 @@ const saveEditedItem = function(){
   let editItemBlock = event.target.parentElement;
   let changedObjective = event.target.parentElement.children[0].value;
   let reqBody = `newObjective=${changedObjective}`;
-  let path = `todo/${todoId}/item/${itemId}/edit`
+  let path = `${todoId}/item/${itemId}/edit`
   return sendAjaxRequest('post',path,function(){
     showEditedItem(JSON.parse(this.responseText))
   },reqBody);
@@ -78,7 +65,7 @@ const removeItem = function(itemId){
 
 const deleteItem = function(){
   let itemId = event.target.id;
-  let path = `todo/${getTodoId()}/item/${itemId}/delete`;
+  let path = `${getTodoId()}/item/${itemId}/delete`;
   return sendAjaxRequest('post',path,function(){
     let itemId = JSON.parse(this.responseText).itemId;
     removeItem(itemId)
@@ -87,7 +74,7 @@ const deleteItem = function(){
 
 const changeStatus = function(){
   let itemId = event.target.id;
-  let path = `todo/${getTodoId()}/item/${itemId}/changeStatus`;
+  let path = `${getTodoId()}/item/${itemId}/changeStatus`;
   return sendAjaxRequest('post',path,()=>{})
 }
 
@@ -104,11 +91,18 @@ const showNewItem = function(text){
 const addNewItem = function(){
   let itemObjective = document.getElementById("newItem").value;
   let reqBody = `itemObjective=${itemObjective}`;
-  sendAjaxRequest('POST',`todo/${getTodoId()}/addNewItem`,function(){
+  console.log(getTodoId());
+  sendAjaxRequest('POST',`${getTodoId()}/addNewItem`,function(){
     showNewItem(this.responseText);
   },reqBody);
 }
 
+const newDiv = function(divId,innerHTML){
+  let div = document.createElement('div');
+  div.id = divId;
+  div.innerHTML = innerHTML;
+  return div;
+}
 const createElement = function(elementTag,innerHTML){
   let element = document.createElement(elementTag)
   element.innerHTML = innerHTML;
@@ -117,19 +111,19 @@ const createElement = function(elementTag,innerHTML){
 
 const showEditedTitle = function(text){
   let editTitleBlock = getElement(".editBlock");
-  let newTitle = createElement('h4',text)
+  let newTitle = newDiv('title',text)
   editTitleBlock.replaceWith(newTitle);
 }
 const showEditedDescription = function(text){
   let editDescriptionBlock = getElement(".editBlock");
-  let newDescription = createElement('h4',text);
+  let newDescription = newDiv('description',text);
   editDescriptionBlock.replaceWith(newDescription)
 }
 
 const saveEditedTitle =function(){
   let todoId = getElement('.editBlock').id
   let newTitle = getElement('.editBlock input').value;
-  let path = `todo/${todoId}/editTitle`;
+  let path = `${todoId}/editTitle`;
   let reqBody = `newTitle=${newTitle}`;
   sendAjaxRequest('POST',path,function(){
     showEditedTitle(this.responseText);
@@ -163,7 +157,7 @@ const saveEditedDescription = function(){
   let newDescription = getElement('.editBlock input').value;
   let todoId = getElement('.editBlock').id;
   let reqBody = `newDescription=${newDescription}`;
-  sendAjaxRequest('POST',`todo/${todoId}/editDescription`,function(){
+  sendAjaxRequest('POST',`${todoId}/editDescription`,function(){
     showEditedDescription(this.responseText)
   },reqBody);
 }
@@ -195,7 +189,6 @@ const loadPage = function(){
   // Have to change function name.
   let addItem = document.querySelector('#addItemButton')
   addItem.onclick=showTextBoxForNewItems;
-  getTodoView();
 };
 
 window.onload = loadPage;

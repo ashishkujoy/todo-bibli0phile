@@ -119,7 +119,7 @@ let loginPage = `<title>Login Page</title></head><body><center><h1>LOGIN PAGE</h
 let homepage = `<body><h1>TO-DO</h1><a href="/createToDo"><button type="button">Create To-Do</button></a><a href="/viewToDo.html">`;
 let createToDoPage = `<h1><a href="/home.html"><<</a>Create A ToDo</h1>username<form class="create" method="post">`
 let viewTodoPage = ` <a href="home.html"><< </a> View TO-DO</h1><br><br><div id="todolist"></div>`;
-
+let todoPage = `<span id='username'>USERNAME</span><div id="title">REPLACE TITLE</div><div id="description">REPLACE DESCRIPTION</div><div id="items">REPLACE ITEMS</div>`
 fs.readFileSync = function(filePath,endcoding){
   if(filePath=='./data/todoList.json'){
     return JSON.stringify(allUsers);
@@ -128,7 +128,8 @@ fs.readFileSync = function(filePath,endcoding){
     './public/login.html':loginPage,
     '.public/home.html':homepage,
     './public/createToDo.html':createToDoPage,
-    './public/viewToDo.html':viewTodoPage
+    './public/viewToDo.html':viewTodoPage,
+    './public/todo.html':todoPage
   }
   return contents[filePath];
 }

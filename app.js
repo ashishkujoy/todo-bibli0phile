@@ -2,7 +2,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser')
 const app = express();
 const lib = require('./appLib.js');
-const ServeTodoHandler = require('./handler/serveTodoHandler.js');
 const CompositeHandler = require('./handler/compositeHandler.js');
 const LogRequestHandler = require('./handler/logRequestHandler.js');
 const LoadUserHandler = require('./handler/loadUserHandler.js');
@@ -13,7 +12,6 @@ const UserRegistry = require('./src/usersRegistry.js');
 let urlList = ['/', '/home.html', '/logout', '/viewTodo', '/todoList', '/todo', '/createToDo', '/delete', '/edit','/singletodo'];
 
 
-const serveTodoHandler = new ServeTodoHandler();
 const compositeHandler = new CompositeHandler();
 const logRequestHandler = new LogRequestHandler();
 const loadUserHandler = new LoadUserHandler();
@@ -25,7 +23,7 @@ compositeHandler.addHandler(logRequestHandler);
 compositeHandler.addHandler(loadUserHandler);
 compositeHandler.addHandler(loginHandler);
 
-compositeHandler.addHandler(serveTodoHandler);
+//compositeHandler.addHandler(serveTodoHandler);
 
 const staticHandler = express.static('public')
 
@@ -42,7 +40,6 @@ app.use(compositeHandler.getRequestHandler());
 app.use(staticHandler)
 app.use(lib.redirectLoggedInUserToHome);
 app.get('/todoList',lib.getAllTodos);
-app.get('/singletodo',lib.getATodo);
 app.route('/login')
   .get(getLoginHandler.getRequestHandler())
   .post(postLoginHandler.getRequestHandler());
@@ -51,6 +48,7 @@ app.route('/createToDo')
   .get(lib.getCreateTodoPage)
   .post(lib.createATodo);
 app.get('/delete',lib.deleteTodo);
+app.get('/todo/:todoId',lib.getTodoPage);
 app.post('/todo/:todoId/item/:itemId/changeStatus',lib.changeItemStatus);
 app.post('/todo/:todoId/item/:itemId/delete',lib.deleteItem);
 app.post('/todo/:todoId/item/:itemId/edit',lib.editItem);

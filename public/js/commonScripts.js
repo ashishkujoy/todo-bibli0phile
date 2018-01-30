@@ -1,5 +1,6 @@
 /* eslint-disable */
 const sendAjaxRequest = function(method,url,callBack,reqBody){
+  // DEBUG: 
   let ajax = new XMLHttpRequest();
   ajax.onload=callBack;
   ajax.open(method,url);
@@ -9,4 +10,3 @@ const sendAjaxRequest = function(method,url,callBack,reqBody){
   }
   ajax.send();
 }
-

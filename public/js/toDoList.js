@@ -2,8 +2,10 @@
 const getToDos = function (user) {
  let toDos = Object.keys(user.allTodo);
  let todoTitle ='';
+ let index = 1;
  toDos.forEach(todoID=>{
-   todoTitle += `<a href="todoId-${todoID}">${user.allTodo[todoID].title}</a><br>`;
+   todoTitle += `${index} <a href="todo/${todoID}">${user.allTodo[todoID].title}</a><br>`;
+   index++;
  })
  return todoTitle;
 }
