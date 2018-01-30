@@ -8,7 +8,6 @@ class LogRequestHandler extends DefaultHandler {
   }
 
   execute(req,res,next){
-    debugger;
     let text = ['------------------------------',
       `${timeStamp()}`,
       `${req.method} ${req.url}`,

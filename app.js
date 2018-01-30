@@ -39,6 +39,14 @@ app.use(cookieParser());
 app.use(compositeHandler.getRequestHandler());
 app.use(staticHandler)
 app.use(lib.redirectLoggedInUserToHome);
+// app.use(function(req,res,next){
+//   if(req.url.startsWith('/todo/')) {
+//     let user = req.app.userRegistry.getAUser(req.userName);
+//     let todo = user.getSingleTodo(req.params.todoId);
+//     req.todo = todo;
+//   }
+//   next();
+// })
 app.get('/todoList',lib.getAllTodos);
 app.route('/login')
   .get(getLoginHandler.getRequestHandler())

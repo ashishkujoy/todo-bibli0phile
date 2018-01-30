@@ -49,8 +49,10 @@ class UserRegistry {
     this.fs.writeFileSync(this.storagePath,contentToWrite,()=>{});
   }
 
-  addNewUser(newUser){
-    this.users.unshift(newUser);
+  addNewUser(username){
+    let user = new User(username)
+    this.users.unshift(user);
+    return user;
   }
 
 }

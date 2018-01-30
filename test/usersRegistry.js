@@ -31,7 +31,7 @@ describe('userRegistry',function(){
   describe('addNewUser',function(){
     it('add a given user in allUsers',function(){
       assert.isUndefined(userRegistry.getAUser('ashish'));
-      userRegistry.addNewUser(new User('ashish'));
+      userRegistry.addNewUser('ashish');
       assert.deepEqual(userRegistry.getAUser('ashish'),new User('ashish'));
     })
   })

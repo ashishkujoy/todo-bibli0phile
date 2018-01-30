@@ -1,34 +1,7 @@
 /* eslint-disable */
-const getElement = function(selector){
-  return document.querySelector(selector);
-}
+
 const getTodoId = function(){
   return getElement('#title p').id;
-}
-const updateInnerHTML = (selector,html)=>{
-  document.querySelector(selector).innerHTML = html;
-}
-
-const getInnerText = function(id){
-  let element = document.querySelector(`#${id}`);
-  return element.innerText;
-}
-
-const createInputElement = function(type,value,id){
-  let input = document.createElement('input');
-  input.type = type;
-  input.value = value||'';
-  input.id = id||'';
-  input.className = 'input';
-  return input;
-}
-
-const createButton = function(innerText,id,onclickFunc){
-  let button = document.createElement('button');
-  button.id = id||"";
-  button.innerText = innerText;
-  button.onclick = onclickFunc;
-  return button;
 }
 
 const showEditedItem = function(res){
@@ -57,6 +30,7 @@ const editItem = function(){
   editItemBlock.appendChild(createButton('Save',itemId,saveEditedItem))
   item.replaceWith(editItemBlock);
 }
+
 const removeItem = function(itemId){
   let item = document.getElementById(itemId).parentElement;
   let items = item.parentElement;
@@ -97,26 +71,21 @@ const addNewItem = function(){
   },reqBody);
 }
 
-const newDiv = function(divId,innerHTML){
-  let div = document.createElement('div');
-  div.id = divId;
-  div.innerHTML = innerHTML;
-  return div;
-}
-const createElement = function(elementTag,innerHTML){
+const createElement = function(elementTag,id,innerHTML){
   let element = document.createElement(elementTag)
+  element.id = id;
   element.innerHTML = innerHTML;
   return element;
 }
 
 const showEditedTitle = function(text){
   let editTitleBlock = getElement(".editBlock");
-  let newTitle = newDiv('title',text)
+  let newTitle = createElement('div','title',text)
   editTitleBlock.replaceWith(newTitle);
 }
 const showEditedDescription = function(text){
   let editDescriptionBlock = getElement(".editBlock");
-  let newDescription = newDiv('description',text);
+  let newDescription = createElement('div','description',text);
   editDescriptionBlock.replaceWith(newDescription)
 }
 
@@ -131,15 +100,8 @@ const saveEditedTitle =function(){
 }
 const editTodoTitle = function(){
   let titleDiv = document.querySelector('#title');
-  let title = getInnerText('title');
-  title = title.replace('Title: ','').replace(' edit','');
-  let options = {
-    blockId:getTodoId(),
-    textBoxValue:title,
-    textBoxId:'newTitle',
-    saveFunction:saveEditedTitle
-  }
-  let editTitleBlock = createEditBlock(options);
+  let title = getInnerText('title').replace(' edit','');
+  let editTitleBlock = createEditBlock(getTodoId(),'newTitle',title,saveEditedTitle);
   titleDiv.replaceWith(editTitleBlock);
 }
 
@@ -164,31 +126,23 @@ const saveEditedDescription = function(){
 
 const editTodoDescription = function(){
   let descriptionDiv = document.querySelector('#description');
-  let description = getInnerText('description');
-  description = description.replace('Description: ','').replace(' edit','');
-  let options = {
-    blockId:getTodoId(),
-    textBoxValue:description,
-    textBoxId:'newDescription',
-    saveFunction:saveEditedDescription
-  }
-  let editDescriptionBlock = createEditBlock(options);
+  let description = getInnerText('description').replace(' edit','');
+  let editDescriptionBlock = createEditBlock(getTodoId(),'newDescription',description,saveEditedDescription);
   descriptionDiv.replaceWith(editDescriptionBlock);
 }
 
-const createEditBlock = function(options){
+const createEditBlock = function(blockId,textBoxId,textBoxValue,saveFunction){
   let editBlock = document.createElement('h1');
   editBlock.className = 'editBlock';
-  editBlock.id = options.blockId;
-  editBlock.appendChild(createInputElement('text',options.textBoxValue,options.textBoxId));
-  editBlock.appendChild(createButton('Save',null,options.saveFunction));
+  editBlock.id = blockId;
+  editBlock.appendChild(createInputElement('text',textBoxValue,textBoxId));
+  editBlock.appendChild(createButton('Save',null,saveFunction));
   return editBlock;
 }
 
-const loadPage = function(){
-  // Have to change function name.
+const addKeyListeners = function(){
   let addItem = document.querySelector('#addItemButton')
   addItem.onclick=showTextBoxForNewItems;
 };
 
-window.onload = loadPage;
+window.onload = addKeyListeners;
