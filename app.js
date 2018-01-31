@@ -9,7 +9,7 @@ const LoginHandler = require('./handler/loginHandler.js');
 const GetLoginHandler = require('./handler/getLoginHandler.js');
 const PostLoginHandler = require('./handler/postLoginHandler.js');
 const UserRegistry = require('./src/usersRegistry.js');
-let urlList = ['/', '/home.html', '/logout',  '/todoList', '/createTodo', '/delete', '/edit','/singletodo'];
+let urlList = ['/', '/home.html', '/logout',  '/todoList', '/createTodo', '/delete', '/edit','/singletodo','/viewTodo.html'];
 
 
 const compositeHandler = new CompositeHandler();
@@ -23,7 +23,6 @@ compositeHandler.addHandler(logRequestHandler);
 compositeHandler.addHandler(loadUserHandler);
 compositeHandler.addHandler(loginHandler);
 
-//compositeHandler.addHandler(serveTodoHandler);
 
 const staticHandler = express.static('public')
 
@@ -39,14 +38,6 @@ app.use(cookieParser());
 app.use(compositeHandler.getRequestHandler());
 app.use(staticHandler)
 app.use(lib.redirectLoggedInUserToHome);
-// app.use(function(req,res,next){
-//   if(req.url.startsWith('/todo/')) {
-//     let user = req.app.userRegistry.getAUser(req.userName);
-//     let todo = user.getSingleTodo(req.params.todoId);
-//     req.todo = todo;
-//   }
-//   next();
-// })
 app.get('/todoList',lib.getAllTodos);
 app.route('/login')
   .get(getLoginHandler.getRequestHandler())

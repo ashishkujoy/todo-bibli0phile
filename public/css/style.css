@@ -30,3 +30,17 @@ h1{
   font-size: 2vw;
   font-style: italic;
 }
+
+#login_page {
+  background-image: url('../images/pencils.png');
+}
+
+
+#login_container {
+  margin-top: 8vw;
+  /* border: 3px solid lightsteelblue; */
+  margin-left: 42vw;
+  margin-right:  42vw;
+  padding: 30px;
+  color: white;
+}

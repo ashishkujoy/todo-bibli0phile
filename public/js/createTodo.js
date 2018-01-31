@@ -16,6 +16,6 @@ const addEventListener = function(){
   addButton.onclick = function(){
     getTextBox('addItem');
   }
-  
+
 };
 window.onload = addEventListener;
