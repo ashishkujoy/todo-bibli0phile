@@ -10,6 +10,10 @@ const sendAjaxRequest = function(method,url,callBack,reqBody){
   ajax.send();
 }
 
+const redirectTo = function(location) {
+  window.location = location;
+}
+
 const getElement = function(selector){
   return document.querySelector(selector);
 }

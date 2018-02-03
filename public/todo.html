@@ -2,24 +2,33 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/css/style.css">
+    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/todo.css">
     <script src="/js/commonScripts.js" charset="utf-8"></script>
     <script src="/js/getTodo.js" charset="utf-8"></script>
+    <!-- <link rel="stylesheet" href="/css/createTodo.css"> -->
     <title>Todo</title>
   </head>
   <body>
-    <h2><a href="/home.html">Home</a><br>
-    </h2>
-    <span id='logoutAndUsername'>
-      <span id='username'>USERNAME</span>
-        <a href="/logout">Logout</a>
-    </span>
-    <h4>
-      <a href="/delete">Delete Todo</a>
-    </h4>
-    <div id="title">REPLACE TITLE</div>
-    <div id="description">REPLACE DESCRIPTION</div>
-    <div id="items">REPLACE ITEMS</div>
-    <button id='addItemButton'>Add Item</button>
+    <div id='header'>
+      <span>
+        <a href="/home.html"><img src="/images/logo.jpeg" id='logo'/></a>
+        TODO
+        <span id='user'>USERNAME
+          <a href="/logout"><img src="/images/logout.png" id="logout"></a></span>
+      </span>
+    </div>
+    <div id="body">
+      <h4>
+        <a href="/delete">Delete Todo</a>
+      </h4>
+      <div id='todo_details'>
+        <div id="title">REPLACE TITLE</div>
+        <div id="description">REPLACE DESCRIPTION</div>
+        <div id="items">REPLACE ITEMS</div>
+        <button id='addItemButton'>Add Item</button>
+      </div>
+    </div>
   </body>
 </html>

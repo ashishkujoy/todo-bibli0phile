@@ -1,8 +1,11 @@
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="./css/foo.css">
+    <link rel="stylesheet" href="./css/createTodo.css">
+    <link rel="stylesheet" href="/css/common.css">
     <script src="/js/createTodo.js" charset="utf-8"></script>
+    <script src="/js/commonScripts.js" charset="utf-8"></script>
     <title>Create ToDo</title>
   </head>
   <body>
@@ -12,8 +15,6 @@
         TODO
         <span id='user'>username
           <a href="/logout"><img src="./images/logout.png" id="logout"></a></span>
-
-        <!-- <a href="/logout" id="logout">logout</a> -->
       </span>
     </div>
     <div id='container'>
@@ -25,8 +26,11 @@
         <p id="description">Description <textarea name="description" rows="5" cols="80"></textarea></p>
         <p id="items">Items</p><div id="addItem"></div><p></p>
         <p><button type="button" id="addButton">Add Item</button></p>
-        <p><button type="submit">Submit</button></p><p>
-      </p></form>
+        <p>
+          <button type="submit">Submit</button>
+          <button type="button" id='cancel'>Cancel</button>
+        </p>
+      </form>
     </div>
   </body>
 </html>

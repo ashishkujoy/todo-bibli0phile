@@ -6,16 +6,20 @@ let getTextBox = function(boxSpaceId) {
   box.name = 'item';
   box.rows = '2';
   box.cols = '80';
+  box.className = 'item_title_input';
   boxSpace.appendChild(box);
   boxSpace.appendChild(newLine);
 };
 
 
 const addEventListener = function(){
-  let addButton = document.querySelector('#addButton');
+  let addButton = getElement('#addButton');
   addButton.onclick = function(){
     getTextBox('addItem');
   }
-
+  let cancel = getElement('#cancel')
+  cancel.onclick = function(){
+    return redirectTo('viewToDo.html')
+  };
 };
 window.onload = addEventListener;

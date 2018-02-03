@@ -1,0 +1,31 @@
+#body {
+  text-align: center;
+
+}
+body{
+  background-color: lightsteelblue;
+}
+
+#title {
+  text-align: center;
+  font-size: 3vw;
+  font-weight: bold;
+  background-color: grey;
+}
+
+#description {
+  text-align: center;
+  font-size: 2vw;
+  font-style: italic;
+  background-color: grey;
+}
+
+#items {
+  color:blue;
+  background-color: grey;
+}
+
+#todo_details {
+  margin-left: 20vw;
+  margin-right: 20vw;
+}

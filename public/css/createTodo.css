@@ -1,0 +1,26 @@
+h1{
+  text-align: center;
+  font-family: sans-serif;
+}
+
+body{
+  background-image: url('../images/blur-background-1.jpg');
+}
+
+.create{
+  margin-top: 5vw;
+  font-size: 1.5vw;
+}
+
+#container {
+  text-align: center;
+}
+
+input {
+  width: 20vw;
+  height: 2vw;
+}
+
+.item_title_input {
+  margin-left: 7vw;
+}

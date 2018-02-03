@@ -1,0 +1,16 @@
+#header {
+  font-size: 5vw;
+  background-color: cadetblue;
+}
+#logo{
+  width: 3%;
+}
+#user {
+  /* float: right; */
+  font-size: 3vw;
+  margin-top: 1vw;
+  margin-left: 68vw;
+}
+#logout{
+  width: 2%;
+}
