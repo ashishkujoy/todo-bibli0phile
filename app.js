@@ -9,7 +9,7 @@ const LoginHandler = require('./handler/loginHandler.js');
 const GetLoginHandler = require('./handler/getLoginHandler.js');
 const PostLoginHandler = require('./handler/postLoginHandler.js');
 const UserRegistry = require('./src/usersRegistry.js');
-let urlList = ['/', '/home.html', '/logout',  '/todoList', '/createTodo', '/delete', '/edit','/singletodo','/viewTodo.html'];
+let urlList = ['/', '/viewTodo.html', '/logout',  '/todoList', '/createTodo', '/delete', '/edit','/singletodo','/viewTodo.html'];
 
 
 const compositeHandler = new CompositeHandler();

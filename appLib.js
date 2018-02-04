@@ -24,7 +24,7 @@ const getTodo = function(req) {
 let lib = {};
 
 lib.redirectLoggedInUserToHome = (req,res)=>{
-  if(req.urlIsOneOf(['/','/login']) && req.user) res.redirect('/home.html');
+  if(req.urlIsOneOf(['/','/login']) && req.user) res;
 }
 lib.logoutUser = function(req,res) {
   res.cookie('sessionid','0',{maxAge:0, encode:String, path:''});

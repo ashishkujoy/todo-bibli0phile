@@ -51,7 +51,7 @@ describe('app',function() {
   describe('GET /home.html',()=>{
     it('gives the home page',done=>{
       request(app)
-        .get('/home.html')
+        .get('/viewTodo.html')
         .set('Cookie','sessionid=12345')
         .expect(200)
         .expect(/TO-DO/)
@@ -145,7 +145,7 @@ describe('app',function() {
         .post('/login')
         .send('userName=pallabi')
         .expect(302)
-        .expect('Location','/home.html')
+        .expect('Location','/viewTodo.html')
         .end(done);
     })
     it('redirects to login.html with message for invalid user',done=>{

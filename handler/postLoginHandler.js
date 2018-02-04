@@ -19,7 +19,7 @@ class PostLoginHandler extends UserHandler{
     }
     let sessionid = req.app.sessionManager.createSession(userName);
     res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
-    res.redirect('/home.html');
+    res.redirect('/viewTodo.html');
   }
 
  }

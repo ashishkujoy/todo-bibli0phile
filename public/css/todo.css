@@ -10,19 +10,19 @@ body{
   text-align: center;
   font-size: 3vw;
   font-weight: bold;
-  background-color: grey;
+  /* background-color: grey; */
 }
 
 #description {
   text-align: center;
   font-size: 2vw;
   font-style: italic;
-  background-color: grey;
+  /* background-color: grey; */
 }
 
 #items {
-  color:blue;
-  background-color: grey;
+  /* color:blue; */
+  /* background-color: grey; */
 }
 
 #todo_details {
