@@ -23,6 +23,18 @@ compositeHandler.addHandler(logRequestHandler);
 compositeHandler.addHandler(loadUserHandler);
 compositeHandler.addHandler(loginHandler);
 
+let todoApp = express.Router({mergeParams:true});
+todoApp.use(function(req,res,next){
+  if(!req.userName) return res.redirect('/login');
+  next();
+})
+todoApp.get('/:todoId',lib.getTodoPage);
+todoApp.post('/:todoId/item/:itemId/changeStatus',lib.changeItemStatus);
+todoApp.post('/:todoId/item/:itemId/delete',lib.deleteItem);
+todoApp.post('/:todoId/item/:itemId/edit',lib.editItem);
+todoApp.post('/:todoId/addNewItem',lib.addNewItem);
+todoApp.post('/:todoId/editTitle',lib.editTodoTitle);
+todoApp.post('/:todoId/editDescription',lib.editTodoDescription);
 
 const staticHandler = express.static('public')
 
@@ -38,6 +50,7 @@ app.use(cookieParser());
 app.use(compositeHandler.getRequestHandler());
 app.use(staticHandler)
 app.use(lib.redirectLoggedInUserToHome);
+app.use('/todo',todoApp);
 app.get('/todoList',lib.getAllTodos);
 app.route('/login')
   .get(getLoginHandler.getRequestHandler())
@@ -47,13 +60,13 @@ app.route('/createTodo')
   .get(lib.getCreateTodoPage)
   .post(lib.createATodo);
 app.get('/delete',lib.deleteTodo);
-app.get('/todo/:todoId',lib.getTodoPage);
-app.post('/todo/:todoId/item/:itemId/changeStatus',lib.changeItemStatus);
-app.post('/todo/:todoId/item/:itemId/delete',lib.deleteItem);
-app.post('/todo/:todoId/item/:itemId/edit',lib.editItem);
-app.post('/todo/:todoId/addNewItem',lib.addNewItem);
-app.post('/todo/:todoId/editTitle',lib.editTodoTitle);
-app.post('/todo/:todoId/editDescription',lib.editTodoDescription);
+//app.get('/todo/:todoId',lib.getTodoPage);
+// app.post('/todo/:todoId/item/:itemId/changeStatus',lib.changeItemStatus);
+// app.post('/todo/:todoId/item/:itemId/delete',lib.deleteItem);
+// app.post('/todo/:todoId/item/:itemId/edit',lib.editItem);
+// app.post('/todo/:todoId/addNewItem',lib.addNewItem);
+// app.post('/todo/:todoId/editTitle',lib.editTodoTitle);
+// app.post('/todo/:todoId/editDescription',lib.editTodoDescription);
 app.initialize = function(customFs,sessionManager){
   app.sessionManager = sessionManager;
   app.fs= customFs
