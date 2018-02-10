@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Todo Page</title>
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/todo1.css">
+    <script src="/js/common.js" charset="utf-8"></script>
+    <script src="/js/todo.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <header>
+      <i class="fa fa-list-ol"></i>
+      <h1>Todo</h1>
+      <h2>username</h2>
+      <i class="fa fa-sign-out-alt"></i>
+    </header>
+    <main>
+      <div class="todo-list">
+        <h2>Todo List</h2>
+      </div>
+      <div class="todo">
+        <h1>Add new todo</h1>
+        <form action='/createTodo' method='POST'>
+          <label for="title">Title</label>
+          <input type="text" name="title" placeholder="title" required>
+          <br />
+          <label for="description">Discription</label>
+          <textarea type="text" rows="2" cols="40" name="description" placeholder="describe me here"></textarea>
+          <br />
+          <div>
+
+          </div>
+          <input type="button" value="Add Task"></input>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

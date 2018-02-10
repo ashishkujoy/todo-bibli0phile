@@ -1,0 +1,150 @@
+header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  border: 2px solid black;
+}
+
+.fa-list-ol{
+  font-size: 5vw;
+  width: 8vw;
+  align-self: center;
+}
+
+.fa-sign-out-alt {
+  font-size: 3vw;
+  width: 5vw;
+  margin-top: 2vw;
+}
+
+header h1 {
+  width: 50vw;
+  font-size:6vw;
+  margin-left: 1vw;
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+}
+
+header h2 {
+  width: 30vw;
+  align-self: auto;
+  font-size: 70px;
+  margin-left: 4vw;
+  margin-top: 2vh;
+  font-weight:lighter;
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+}
+
+main {
+  height: 100vh;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  border: 2px solid black;
+}
+
+.todo-list {
+  border: 2px solid black;
+  width: 30vw;
+  height: 100vh;
+}
+
+.todo-list h2 {
+  font-size: 3vw;
+  font-weight: normal;
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0.3em;
+  text-align: center;
+  border-bottom: 0.2vw solid black;
+}
+
+.todo-list i {
+  font-size: 2vw;
+  align-self: center;
+}
+
+.todo-list table{
+  margin-left:1vw;
+}
+
+.todo {
+  border: 2px solid black;
+  display: flex;
+  flex-flow: column nowrap;
+  width: 70vw;
+  height: 100vh;
+  font-size: 2vw;
+}
+
+.todo-list div {
+  font-size: 2vw;
+  padding-left:1vw
+}
+
+.todo-list div:hover {
+  background-color: blue;
+}
+
+.todo h1 {
+  align-self: center;
+  font-size: 3vw;
+  font-weight: normal;
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+}
+
+.todo form {
+  margin-left: 2vw;
+}
+
+.todo form input[name="title"] {
+  width:50vw;
+  height:4vh;
+  font-size: 2vw;
+}
+
+.todo form button[type="submit"] {
+  width:10vw;
+  font-size: 1vw;
+}
+
+.todo form textarea {
+  font-style: italic;
+  font-size: 2vw;
+}
+
+.todo form input[name="item"] {
+  width:50vw;
+  height:4vh;
+  font-size: 1.3vw;
+  margin-left: 4vw;
+}
+
+.todo input[value="Add Task"] {
+  width: 10vw;
+  font-size: 2vw;
+  margin-left: 20vw;
+}
+
+.todo span {
+  margin-left: 20vw;
+}
+
+.todo input[value="Save"] {
+  width: 10vw;
+  font-size: 2vw;
+}
+
+.todo input[value="Cancel"] {
+  width: 10vw;
+  font-size: 2vw;
+}
+
+.fa-circle {
+  font-size: 10px;
+}
+
+.hidden {
+  visibility: hidden;
+}
