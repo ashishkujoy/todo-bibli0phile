@@ -1,4 +1,4 @@
-const DefaultHandler = require('./DefaultHandler.js');
+const DefaultHandler = require('./defaultHandler.js');
 
 class LoginHandler extends DefaultHandler{
   constructor(allUrl) {
@@ -16,6 +16,6 @@ class LoginHandler extends DefaultHandler{
       res.end();
     }
   }
-  
+
 }
 module.exports = LoginHandler;
