@@ -146,7 +146,7 @@ fs.mkdirSync = function(directory) {
 }
 fs.existsSync = function(filePath){
   let existingFiles = ['./public/login.html','.public/home.html',
-  './public/createTodo.html','./public/viewToDo.html']
+  './public/createTodo.html','./public/viewTodo.html']
   return existingFiles.includes(filePath);
 }
 fs.appendFile = function(filename,text){

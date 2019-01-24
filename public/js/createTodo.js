@@ -19,7 +19,7 @@ const addEventListener = function(){
   }
   let cancel = getElement('#cancel')
   cancel.onclick = function(){
-    return redirectTo('viewToDo.html')
+    return redirectTo('viewTodo.html')
   };
 };
 window.onload = addEventListener;
