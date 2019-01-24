@@ -122,10 +122,10 @@ describe('app',function() {
   describe('GET /delete',()=>{
     it('should delete a todo',done=>{
      request(app)
-       .get('/delete')
-       .set('Cookie','sessionid=12345; todoId=4')
-       .expect(302)
-       .expect('Location','/viewTodo.html')
+       .post('/delete')
+       .set('Cookie','sessionid=12345')
+         .send('todoId=4')
+       .expect(202)
        .end(done);
     })
   })

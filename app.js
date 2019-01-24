@@ -59,7 +59,7 @@ app.get('/logout',lib.logoutUser);
 app.route('/createTodo')
   .get(lib.getCreateTodoPage)
   .post(lib.createATodo);
-app.get('/delete',lib.deleteTodo);
+app.post('/delete',lib.deleteTodo);
 app.initialize = function(customFs,sessionManager){
   app.sessionManager = sessionManager;
   app.fs= customFs

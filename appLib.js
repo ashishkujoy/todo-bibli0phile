@@ -72,9 +72,10 @@ lib.getAllTodos = function(req,res) {
 
 lib.deleteTodo = function(req,res) {
   let user = req.app.userRegistry.getAUser(req.userName);
-  user.deleteTodo(req.cookies.todoId);
+  user.deleteTodo(req.body.todoId);
   req.app.userRegistry.write()
-  res.redirect('/viewTodo.html');
+  res.status(202);
+  res.send();
 }
 lib.changeItemStatus = function(req,res){
   let todo = getTodo(req);
@@ -102,7 +103,6 @@ lib.addNewItem = function(req,res){
   let todo = getTodo(req);
   let itemId=todo.addItem(req.body.itemObjective);
   let item = toHtmlItem(todo.getItem(itemId));
-  debugger;
   res.send(item);
   req.app.userRegistry.write();
 }
